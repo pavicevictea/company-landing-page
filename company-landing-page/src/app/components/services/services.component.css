@@ -1,0 +1,40 @@
+#services {
+  padding: 60px 20px;
+  background-color: #0b0f19;
+  color: #f3f4f6;
+}
+
+.services-content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+#services h2 {
+  margin: 0 0 50px;
+  font-size: 34px;
+  font-weight: 600;
+}
+
+.service {
+  padding: 30px 0;
+  border-top: 1px solid #374151;
+}
+
+.service:last-child {
+  border-bottom: 1px solid #374151;
+}
+
+.service h3 {
+  margin: 0 0 10px;
+  font-size: 21px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.service p {
+  max-width: 650px;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #9ca3af;
+}
