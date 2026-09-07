@@ -11,7 +11,6 @@ import { Component } from '@angular/core';
       <app-contact></app-contact>
     </main>
     <app-footer></app-footer>
-    <router-outlet></router-outlet>
   `,
   styles: []
 })
