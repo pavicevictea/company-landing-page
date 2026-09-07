@@ -12,4 +12,9 @@ export class ContactComponent implements OnInit {
   ngOnInit() {
   }
 
+  showMessage(event: Event) {
+    event.preventDefault();
+    alert('This is a demo contact form. No message will be sent');
+  }
+
 }

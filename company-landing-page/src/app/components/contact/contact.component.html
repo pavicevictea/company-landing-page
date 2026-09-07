@@ -4,7 +4,7 @@
       <h2>Let's Talk</h2>
       <p>Have a project in mind or need help with an existing one? Tell us a little about it and we'll get back to you.</p>
     </div>
-    <form class="contact-form">
+    <form class="contact-form" (submit)="showMessage($event)">
       <div class="form-row">
         <div class="form-group">
           <label for="name">Name</label>
@@ -20,6 +20,7 @@
         <textarea id="message" name="message" rows="6" placeholder="Tell us about your project..."></textarea>
       </div>
       <button type="submit">Send Message</button>
+      <p class="demo-message">This is a demo contact form. No message will be sent</p>
     </form>
   </div>
 </section>
