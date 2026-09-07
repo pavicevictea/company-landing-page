@@ -4,10 +4,13 @@ import { Component } from '@angular/core';
   selector: 'app-root',
   template: `
     <app-navbar></app-navbar>
-    <app-hero></app-hero>
-    <app-services></app-services>
-    <app-about></app-about>
-    <app-contact></app-contact>
+    <main>
+      <app-hero></app-hero>
+      <app-services></app-services>
+      <app-about></app-about>
+      <app-contact></app-contact>
+    </main>
+    <app-footer></app-footer>
     <router-outlet></router-outlet>
   `,
   styles: []

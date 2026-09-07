@@ -1,0 +1,55 @@
+footer {
+  padding: 55px 20px 25px;
+  background-color: #131a2c;
+  border-top: 1px solid rgb(86, 102, 126);
+  color: #9ca3af;
+}
+
+.footer-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 60px;
+}
+
+.footer-company h3 {
+  margin: 0 0 12px;
+  color: #ffffff;
+  font-size: 20px;
+}
+
+.footer-company p {
+  max-width: 300px;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.footer-contact h4,
+.footer-location h4 {
+  margin: 0 0 14px;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.footer-contact p,
+.footer-location p {
+  margin: 0 0 7px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.footer-bottom {
+  max-width: 1100px;
+  margin: 45px auto 0;
+  padding-top: 20px;
+  border-top: 1px solid #1f2937;
+}
+
+.footer-bottom p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+}
