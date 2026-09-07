@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
     <app-hero></app-hero>
     <app-services></app-services>
     <app-about></app-about>
+    <app-contact></app-contact>
     <router-outlet></router-outlet>
   `,
   styles: []
