@@ -9,6 +9,7 @@ export class ContactComponent implements OnInit {
 
   name: string = '';
   email: string = '';
+  subject: string = '';
   message: string = '';
 
   constructor() { }
@@ -24,21 +25,25 @@ export class ContactComponent implements OnInit {
     this.email = event.target.value;
   }
 
+  onSubjectInput(event: any) {
+    this.subject = event.target.value;
+  }
+
   onMessageInput(event: any) {
     this.message = event.target.value;
   }
 
   get isFormValid(): boolean {
-    return this.name.trim() !== '' && this.email.trim() !== '' && this.message.trim() !== '';
+    return this.name.trim() !== '' && this.email.trim() !== '' && this.subject.trim() !== '' && this.message.trim() !== '';
   }
 
   showMessage(event: Event) {
     event.preventDefault();
     if (!this.isFormValid) return;
     
-    alert('This is a demo contact form. No message will be sent');
     this.name = '';
     this.email = '';
+    this.subject = '';
     this.message = '';
   }
 
