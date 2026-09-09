@@ -101,3 +101,21 @@
   color: #6b7280;
   cursor: not-allowed;
 }
+
+.success-message {
+  margin: 0;
+  padding-top: 15px;
+  border-top: 1px solid #1f2937;
+  color: #86efac;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.error-message {
+  margin: 0;
+  padding-top: 15px;
+  border-top: 1px solid #1f2937;
+  color: #fca5a5;
+  font-size: 14px;
+  line-height: 1.5;
+}

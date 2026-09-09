@@ -24,6 +24,8 @@
         <textarea id="message" name="message" [value]="message" (input)="onMessageInput($event)" rows="6" placeholder="Tell us about your project..." required></textarea>
       </div>
       <button type="submit" [disabled]="!isFormValid">Send Message</button>
+      <p *ngIf="submitted" class="success-message">Your message has been sent successfully.</p>
+      <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
     </form>
   </div>
 </section>

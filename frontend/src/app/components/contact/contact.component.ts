@@ -1,3 +1,4 @@
+import { ContactService } from './../../services/contact.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -12,7 +13,10 @@ export class ContactComponent implements OnInit {
   subject: string = '';
   message: string = '';
 
-  constructor() { }
+  submitted = false;
+  errorMessage = '';
+
+  constructor(private ContactService: ContactService) { }
 
   ngOnInit() {
   }
@@ -40,11 +44,29 @@ export class ContactComponent implements OnInit {
   showMessage(event: Event) {
     event.preventDefault();
     if (!this.isFormValid) return;
+
+    const inquiry = {
+      name: this.name,
+      email: this.email,
+      subject: this.subject,
+      message: this.message
+    };
     
-    this.name = '';
-    this.email = '';
-    this.subject = '';
-    this.message = '';
+    this.ContactService.submitInquiry(inquiry).subscribe(
+      () => {
+        this.submitted = true;
+        this.errorMessage = '';
+
+        this.name = '';
+        this.email = '';
+        this.subject = '';
+        this.message = '';
+      },
+      () => {
+        this.submitted = false;
+        this.errorMessage = 'Something went wrong. Please try again later.';
+      }
+    );
   }
 
 }
