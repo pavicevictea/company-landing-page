@@ -12,17 +12,12 @@ export class AuthService {
     constructor(private http: HttpClient) {}
 
     login(username: string, password: string): Observable<any> {
-        const body = new HttpParams()
-            .set('username', username)
-            .set('password', password);
+        const body = { username, password };
 
         return this.http.post(
             this.apiUrl + '/login',
-            body.toString(),
+            body,
             {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
                 withCredentials: true
             }
         );
