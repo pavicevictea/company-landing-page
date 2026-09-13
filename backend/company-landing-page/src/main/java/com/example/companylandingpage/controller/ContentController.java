@@ -39,7 +39,7 @@ public class ContentController {
         return contentService.update(id, contentItem);
     }
 
-    @DeleteMapping("/id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         contentService.delete(id);
