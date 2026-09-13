@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/content")
-@CrossOrigin(origins = "http://localhost:4000", allowCredentials = "true")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class ContentController {
     private final ContentService contentService;
 
