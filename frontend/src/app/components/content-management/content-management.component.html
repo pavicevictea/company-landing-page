@@ -1,0 +1,38 @@
+<section class="content-management">
+  <div class="content-container">
+    <div class="page-header">
+      <div>
+        <h1>Content Management</h1>
+        <p>Manage website content.</p>
+      </div>
+      <button type="button" (click)="logout()">Logout</button>
+    </div>
+    <div class="content-form">
+      <h2>{{ editingId === null ? 'Add Content' : 'Edit Content' }}</h2>
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input id="title" type="text" [value]="title" (input)="title = $any($event.target).value" placeholder="Content title">
+      </div>
+      <div class="form-group">
+        <label for="content">Content</label>
+        <textarea id="content" rows="6" [value]="content" (input)="content = $any($event.target).value" placeholder="Content text"></textarea>
+      </div>
+      <button type="button" [disabled]="!title.trim() || !content.trim()" (click)="saveContent()">{{ editingId === null ? 'Add Content' : 'Save Changes' }}</button>
+      <button *ngIf="editingId !== null" type="button" (click)="resetForm()">Cancel</button>
+    </div>
+    <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
+    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+    <div class="content-list">
+      <h2>Existing Content</h2>
+      <div class="content-item" *ngFor="let item of contentItems">
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.content }}</p>
+        <div class="item-actions">
+          <button type="button" (click)="editContent(item)">Edit</button>
+          <button type="button" (click)="deleteContent(item.id)">Delete</button>
+        </div>
+      </div>
+      <p *ngIf="contentItems.length === 0">No content items available.</p>
+    </div>
+  </div>
+</section>
