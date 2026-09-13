@@ -1,0 +1,8 @@
+<section class="dynamic-content-section" *ngIf="contentItems.length > 0">
+  <div class="container">
+    <div class="content-block" *ngFor="let item of contentItems">
+      <h2>{{ item.title }}</h2>
+      <p>{{ item.content }}</p>
+    </div>
+  </div>
+</section>
