@@ -34,12 +34,12 @@ public class ContentController {
         return  contentService.create(contentItem);
     }
 
-    @PutMapping("/id")
+    @PutMapping("/{id}")
     public ContentItem update(@PathVariable Long id, @Valid @RequestBody ContentItem contentItem) {
         return contentService.update(id, contentItem);
     }
 
-    @DeleteMapping("/id")
+    @DeleteMapping("/id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         contentService.delete(id);
