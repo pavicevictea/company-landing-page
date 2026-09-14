@@ -33,6 +33,7 @@ export class AuthService {
     }
 
     logout(): Observable<any> {
+        localStorage.removeItem('isLoggedIn');
         return this.http.post(
             this.apiUrl + '/logout',
             {},
@@ -40,5 +41,9 @@ export class AuthService {
             withCredentials: true
             }
         );
+    }
+
+    isLoggedIn(): boolean {
+        return !!localStorage.getItem('isLoggedIn');
     }
 }

@@ -1,0 +1,14 @@
+<app-navbar></app-navbar>
+<main>
+  <app-hero></app-hero>
+  <app-services></app-services>
+  <app-about></app-about>
+  <app-contact></app-contact>
+  <section class="dynamic-section" *ngFor="let item of dynamicSections">
+    <div class="container">
+      <h2>{{ item.title }}</h2>
+      <p>{{ item.content }}</p>
+    </div>
+  </section>
+</main>
+<app-footer></app-footer>

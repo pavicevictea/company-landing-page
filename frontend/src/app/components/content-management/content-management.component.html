@@ -1,38 +1,64 @@
-<section class="content-management">
-  <div class="content-container">
-    <div class="page-header">
-      <div>
-        <h1>Content Management</h1>
-        <p>Manage website content.</p>
-      </div>
-      <button type="button" (click)="logout()">Logout</button>
+<div class="admin-wrapper">
+  <header class="admin-navbar">
+    <div class="nav-container">
+      <span class="logo-text">Admin Panel - Content Management</span>
+      <button type="button" class="btn-logout" (click)="logout()">Logout</button>
     </div>
-    <div class="content-form">
-      <h2>{{ editingId === null ? 'Add Content' : 'Edit Content' }}</h2>
-      <div class="form-group">
-        <label for="title">Title</label>
-        <input id="title" type="text" [value]="title" (input)="title = $any($event.target).value" placeholder="Content title">
-      </div>
-      <div class="form-group">
-        <label for="content">Content</label>
-        <textarea id="content" rows="6" [value]="content" (input)="content = $any($event.target).value" placeholder="Content text"></textarea>
-      </div>
-      <button type="button" [disabled]="!title.trim() || !content.trim()" (click)="saveContent()">{{ editingId === null ? 'Add Content' : 'Save Changes' }}</button>
-      <button *ngIf="editingId !== null" type="button" (click)="resetForm()">Cancel</button>
-    </div>
-    <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
-    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
-    <div class="content-list">
-      <h2>Existing Content</h2>
-      <div class="content-item" *ngFor="let item of contentItems">
-        <h3>{{ item.title }}</h3>
-        <p>{{ item.content }}</p>
-        <div class="item-actions">
-          <button type="button" (click)="editContent(item)">Edit</button>
-          <button type="button" (click)="deleteContent(item.id)">Delete</button>
+  </header>
+  <div *ngIf="successMessage" class="alert success">{{ successMessage }}</div>
+  <div *ngIf="errorMessage" class="alert error">{{ errorMessage }}</div>
+  <main class="admin-preview">
+    <app-hero></app-hero>
+    <app-services></app-services>
+    <app-about></app-about>
+    <app-contact></app-contact>
+    <section class="dynamic-admin-section" *ngFor="let item of contentItems">
+      <div class="container">
+        <div *ngIf="editingId !== item.id">
+          <h2>{{ item.title }}</h2>
+          <p>{{ item.content }}</p>
+          <div class="action-buttons">
+            <button type="button" class="btn-edit" (click)="startEdit(item)">Edit</button>
+            <button type="button" class="btn-delete" (click)="deleteContent(item.id, item.title)">Delete</button>
+          </div>
+        </div>
+        <div *ngIf="editingId === item.id" class="inline-edit-form">
+          <h3>Edit Section</h3>
+          <div class="form-group">
+            <label>Title</label>
+            <input type="text" [(ngModel)]="editTitle" name="editTitle">
+          </div>
+          <div class="form-group">
+            <label>Content</label>
+            <textarea rows="5" [(ngModel)]="editContentText" name="editContentText"></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-save" (click)="saveEdit(item.id)">Save Changes</button>
+            <button type="button" class="btn-cancel" (click)="cancelEdit()">Cancel</button>
+          </div>
         </div>
       </div>
-      <p *ngIf="contentItems.length === 0">No content items available.</p>
-    </div>
-  </div>
-</section>
+    </section>
+    <section class="add-section-area">
+      <div class="container" style="text-align: center;">
+        <button *ngIf="!isAddingNew" type="button" class="btn-add-trigger" (click)="isAddingNew = true">+ Add New Section</button>
+        <div *ngIf="isAddingNew" class="inline-add-form">
+          <h3>Add New Section</h3>
+          <div class="form-group">
+            <label>Section Title</label>
+            <input type="text" [(ngModel)]="newTitle" name="newTitle" placeholder="e.g. Our Partners">
+          </div>
+          <div class="form-group">
+            <label>Section Content</label>
+            <textarea rows="5" [(ngModel)]="newContentText" name="newContentText" placeholder="Enter paragraph text..."></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-save" [disabled]="!newTitle.trim() || !newContentText.trim()" (click)="saveNewSection()">Publish Section</button>
+            <button type="button" class="btn-cancel" (click)="isAddingNew = false">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <app-footer></app-footer>
+</div>

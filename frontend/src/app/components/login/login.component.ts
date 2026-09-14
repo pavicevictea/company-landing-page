@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.username, this.password)
       .subscribe(
         () => {
+          localStorage.setItem('isLoggedIn', 'true');
           this.router.navigate(['/admin/content']);
         },
         () => {
@@ -36,5 +37,4 @@ export class LoginComponent implements OnInit {
         }
       );
   }
-
 }

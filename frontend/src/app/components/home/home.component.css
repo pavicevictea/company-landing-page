@@ -1,0 +1,41 @@
+.dynamic-section, 
+.dynamic-admin-section {
+  padding: 80px 20px;
+  border-top: 1px solid #374151;
+  border-bottom: 1px solid #374151;
+  color: #f3f4f6;
+}
+
+.dynamic-section:nth-child(odd),
+.dynamic-admin-section:nth-child(odd) {
+  background-color: #131a2c;
+}
+
+.dynamic-section:nth-child(even),
+.dynamic-admin-section:nth-child(even) {
+  background-color: #0b0f19;
+}
+
+.dynamic-section .container, 
+.dynamic-admin-section .container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.dynamic-section h2, 
+.dynamic-admin-section h2 {
+  margin: 0 0 20px;
+  font-size: 34px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.dynamic-section p, 
+.dynamic-admin-section p {
+  max-width: 750px;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #9ca3af;
+  white-space: pre-line;
+}

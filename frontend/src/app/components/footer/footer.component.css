@@ -46,10 +46,30 @@ footer {
   margin: 45px auto 0;
   padding-top: 20px;
   border-top: 1px solid #1f2937;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .footer-bottom p {
   margin: 0;
   color: #6b7280;
   font-size: 13px;
+}
+
+.admin-login-btn {
+  background-color: transparent;
+  color: #6b7280;
+  border: 1px solid #1f2937;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-login-btn:hover {
+  background-color: #374151;
+  border-color: #374151;
+  color: #f3f4f6;
 }
