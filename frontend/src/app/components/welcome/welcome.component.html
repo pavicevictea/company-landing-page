@@ -1,0 +1,9 @@
+<section class="welcome-section" *ngIf="currentUser">
+  <div class="welcome-container">
+    <div class="welcome-content">
+      <p class="welcome-label">Welcome back</p>
+      <h2>{{ currentUser.name }}</h2>
+      <p class="welcome-text">We're glad to have you here. Take a look around and see what we can build together.</p>
+    </div>
+  </div>
+</section>
