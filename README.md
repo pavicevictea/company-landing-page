@@ -2,12 +2,11 @@
 
 A company landing page developed as part of the **VOLTIX Internship Program**.
 
-## Task 1 — Company Landing Page
+## Task 1 - Company Landing Page
 
 Created a responsive landing page using: Angular, TypeScript, HTML, CSS
 
-The page includes:
-
+The page includes: 
 - Navbar
 - Hero
 - Services
@@ -15,22 +14,34 @@ The page includes:
 - Contact
 - Footer
 
-## Task 2 — Contact & Inquiry System
+## Task 2 - Contact & Inquiry System
 
-Extended the Contact section with a functional inquiry system.
+Implemented a functional contact form with:
 
-Implemented:
-
-- Contact form with **Name, Email, Subject and Message**
-- Frontend validation
-- REST API using **Spring Boot**
-- Backend validation
-- Data persistence using **H2 Database**
+- Frontend and backend validation
+- Spring Boot REST API
+- H2 database persistence
 - Success and error feedback
 
-### Technologies
+## Task 3 - Internal Content Management
 
-Java, Spring Boot, Maven, Spring Data JPA, Validation, H2 Database
+Implemented an admin panel for managing website content.
+
+- Admin authentication and access control
+- Edit existing content
+- Add and delete custom sections
+- Persistent content storage
+
+## Task 4 - User Registration & Authentication
+
+Implemented user registration and authentication.
+
+- Registration and login
+- Frontend and backend validation
+- Username and email availability checks
+- Password encoding
+- Login/logout and session management
+- Role-based access for users and administrators
 
 ## Running the Project
 
@@ -56,9 +67,3 @@ npm start
 Frontend runs on:
 
 `http://localhost:4000`
-
-## Contact API
-
-```text
-POST /api/contact
-```
