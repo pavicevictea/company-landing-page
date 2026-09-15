@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -24,7 +25,8 @@ export class RegisterComponent implements OnInit {
   successMessage = '';
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -130,6 +132,8 @@ export class RegisterComponent implements OnInit {
         this.emailError = '';
         this.passwordError = '';
         this.confirmPasswordError = '';
+
+        this.router.navigate(['/login']);
       },
       error => {
         if (error.error && error.error.message) {
