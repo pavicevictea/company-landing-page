@@ -4,11 +4,13 @@ import { LoginComponent } from './components/login/login.component';
 import { ContentManagementComponent } from './components/content-management/content-management.component';
 import { AuthGuard } from './guards/auth.guard';
 import { HomeComponent } from './components/home/home.component';
+import { RegisterComponent } from './components/register/register.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'admin/content', component: ContentManagementComponent, canActivate: [AuthGuard] },
+  { path: 'register', component: RegisterComponent},
   { path: '**', redirectTo: '' }
 ];
 
