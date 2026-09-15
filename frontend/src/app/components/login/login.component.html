@@ -2,6 +2,7 @@
 <section class="login-page">
   <div class="login-container">
     <h2>Login</h2>
+    <p *ngIf="successRegistrationMessage" class="success-message">{{ successRegistrationMessage }}</p>
     <form (submit)="login($event)">
       <div class="form-group">
         <label for="username">Username</label>

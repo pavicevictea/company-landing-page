@@ -73,3 +73,10 @@
 .register-link a:hover {
   text-decoration: underline;
 }
+
+.success-message {
+  margin-bottom: 20px;
+  color: #9ca3af;
+  font-size: 14px;
+  text-align: center;
+}

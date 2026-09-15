@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -14,13 +14,22 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   usernameError = '';
   passwordError = '';
+  successRegistrationMessage = '';
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
+    this.route.queryParams.subscribe(
+      params => {
+        if (params['registered'] === 'true') {
+          this.successRegistrationMessage = 'Registration successful. You can now log in.'
+        }
+      }
+    )
   }
 
   validateUsername() {

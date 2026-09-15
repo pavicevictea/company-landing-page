@@ -133,7 +133,9 @@ export class RegisterComponent implements OnInit {
         this.passwordError = '';
         this.confirmPasswordError = '';
 
-        this.router.navigate(['/login']);
+        this.router.navigate(['/login'], {
+          queryParams: { registered: 'true' }
+        });
       },
       error => {
         if (error.error && error.error.message) {
