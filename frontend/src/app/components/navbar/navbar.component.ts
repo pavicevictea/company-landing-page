@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,6 +10,7 @@ import { Router } from '@angular/router';
 export class NavbarComponent implements OnInit {
 
   constructor(
+    private authService: AuthService,
     private router: Router
   ) { }
 
@@ -37,5 +39,22 @@ export class NavbarComponent implements OnInit {
         element.scrollIntoView({ behavior: 'smooth' });
       }
     }
+  }
+
+  get currentUser() {
+    return this.authService.currentUser;
+  }
+
+  logout() {
+    this.authService.logout().subscribe(
+      () => {
+        this.authService.currentUser = null;
+        this.router.navigate(['/']);
+      },
+      () => {
+        this.authService.currentUser = null;
+        this.router.navigate(['/']);
+      }
+    );
   }
 }

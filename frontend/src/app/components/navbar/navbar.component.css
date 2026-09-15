@@ -46,3 +46,19 @@ ul li a {
 ul li a:hover {
   color: #f3f4f6;
 }
+
+.btn-logout {
+  padding: 10px 20px;
+  background-color: transparent;
+  color: #f3f4f6;
+  border: 1px solid #374151;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-logout:hover {
+  background-color: #374151;
+}
