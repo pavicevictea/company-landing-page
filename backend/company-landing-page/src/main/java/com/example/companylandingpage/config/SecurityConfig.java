@@ -1,6 +1,7 @@
 package com.example.companylandingpage.config;
 
 import com.example.companylandingpage.repository.AdminUserRepository;
+import com.example.companylandingpage.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,14 +27,23 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(AdminUserRepository repository) {
-        return username -> repository.findByUsername(username)
-                .map(user -> org.springframework.security.core.userdetails.User
-                        .withUsername(user.getUsername())
-                        .password(user.getPassword())
-                        .roles(user.getRole())
-                        .build())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    public UserDetailsService userDetailsService(AdminUserRepository repository, UserRepository userRepository) {
+        return username -> {
+            return repository.findByUsername(username)
+                    .map(user -> org.springframework.security.core.userdetails.User
+                            .withUsername(user.getUsername())
+                            .password(user.getPassword())
+                            .roles(user.getRole())
+                            .build())
+                    .orElseGet(() -> userRepository.findByEmail(username)
+                                    .map(user -> org.springframework.security.core.userdetails.User
+                                            .withUsername(user.getEmail())
+                                            .password(user.getPassword())
+                                            .roles("USER")
+                                            .build())
+                                    .orElseThrow(() -> new UsernameNotFoundException("User not found"))
+                    );
+        };
     }
 
     @Bean
