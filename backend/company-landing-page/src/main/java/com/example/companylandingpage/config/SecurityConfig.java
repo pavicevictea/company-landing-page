@@ -1,9 +1,12 @@
 package com.example.companylandingpage.config;
 
+import com.example.companylandingpage.model.AdminUser;
+import com.example.companylandingpage.model.User;
 import com.example.companylandingpage.repository.AdminUserRepository;
 import com.example.companylandingpage.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,28 +24,41 @@ import java.util.List;
 @Configuration
 public class SecurityConfig {
 
+    private final AdminUserRepository adminUserRepository;
+    private final UserRepository userRepository;
+
+    public SecurityConfig(AdminUserRepository adminUserRepository, UserRepository userRepository) {
+        this.adminUserRepository = adminUserRepository;
+        this.userRepository = userRepository;
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Bean
-    public UserDetailsService userDetailsService(AdminUserRepository repository, UserRepository userRepository) {
+    public UserDetailsService userDetailsService() {
         return username -> {
-            return repository.findByUsername(username)
-                    .map(user -> org.springframework.security.core.userdetails.User
-                            .withUsername(user.getUsername())
-                            .password(user.getPassword())
-                            .roles(user.getRole())
-                            .build())
-                    .orElseGet(() -> userRepository.findByEmail(username)
-                                    .map(user -> org.springframework.security.core.userdetails.User
-                                            .withUsername(user.getEmail())
-                                            .password(user.getPassword())
-                                            .roles("USER")
-                                            .build())
-                                    .orElseThrow(() -> new UsernameNotFoundException("User not found"))
+            AdminUser admin = adminUserRepository.findByUsername(username).orElse(null);
+            if (admin != null) {
+                return org.springframework.security.core.userdetails.User
+                        .withUsername(admin.getUsername())
+                        .password(admin.getPassword())
+                        .roles(admin.getRole())
+                        .build();
+            }
+            User user = userRepository.findByUsername(username)
+                    .orElseThrow(() ->
+                            new org.springframework.security.core.userdetails.UsernameNotFoundException(
+                                    "User not found"
+                            )
                     );
+            return org.springframework.security.core.userdetails.User
+                    .withUsername(user.getUsername())
+                    .password(user.getPassword())
+                    .roles("USER")
+                    .build();
         };
     }
 
@@ -53,23 +69,29 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/api/contact", "/api/auth/**","/h2-console/**")
-                .permitAll()
-                .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/content/**")
-                .permitAll()
-                .requestMatchers("/api/content/**").hasRole("ADMIN")
-                .anyRequest()
-                .permitAll()
-            ).logout(logout -> logout
-                .logoutUrl("/api/auth/logout")
-                .logoutSuccessHandler((request, response, authentication) -> {
-                    response.setStatus(200);
-                })
-                .permitAll()
-            ).csrf(csrf -> csrf.disable());
-
+        http
+                .cors(cors -> {})
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/me").authenticated()
+                        .requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/logout").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/content/**").permitAll()
+                        .requestMatchers("/api/contact").permitAll()
+                        .requestMatchers("/api/content/**")
+                        .hasRole("ADMIN")
+                        .anyRequest().permitAll()
+                )
+                .headers(headers ->
+                        headers.frameOptions(frame -> frame.sameOrigin())
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/api/auth/logout")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll()
+                );
         return http.build();
     }
 
