@@ -4,6 +4,7 @@ import com.example.companylandingpage.model.AdminUser;
 import com.example.companylandingpage.model.User;
 import com.example.companylandingpage.repository.AdminUserRepository;
 import com.example.companylandingpage.repository.UserRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -90,6 +91,9 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .deleteCookies("JSESSIONID")
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            response.setStatus(HttpServletResponse.SC_OK);
+                        })
                         .permitAll()
                 );
         return http.build();
