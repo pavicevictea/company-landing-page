@@ -11,34 +11,31 @@ header {
 nav {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px 10px;
+  padding: 20px 30px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
-nav a {
+.logo {
   color: #f3f4f6;
   text-decoration: none;
-  font-weight: bold;
-}
-
-.logo {
-  position: relative;
   font-size: 28px;
-  left: -70px;
+  font-weight: bold;
+  margin-right: auto;
 }
 
 ul {
   list-style: none;
   display: flex;
+  align-items: center;
   gap: 35px;
-  position: relative;
-  right: -130px;
+  margin: 0;
+  padding: 0;
 }
 
 ul li a {
   color: #9ca3af;
+  text-decoration: none;
   font-weight: normal;
   font-size: 20px;
 }
@@ -47,7 +44,8 @@ ul li a:hover {
   color: #f3f4f6;
 }
 
-.btn-logout {
+.btn-auth {
+  margin-left: 35px;
   padding: 10px 20px;
   background-color: transparent;
   color: #f3f4f6;
@@ -59,6 +57,6 @@ ul li a:hover {
   transition: background-color 0.2s ease;
 }
 
-.btn-logout:hover {
+.btn-auth:hover {
   background-color: #374151;
 }

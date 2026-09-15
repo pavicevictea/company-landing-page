@@ -7,6 +7,7 @@
       <li><a (click)="scrollTo('about')" style="cursor: pointer;">About Us</a></li>
       <li><a (click)="scrollTo('contact')" style="cursor: pointer;">Contact</a></li>
     </ul>
-    <button *ngIf="currentUser" type="button" class="btn-logout" (click)="logout()">Logout</button>
+    <button *ngIf="!currentUser" type="button" class="btn-auth" (click)="router.navigate(['/login'])">Login</button>
+    <button *ngIf="currentUser" type="button" class="btn-auth" (click)="logout()">Logout</button>
   </nav>
 </header>
