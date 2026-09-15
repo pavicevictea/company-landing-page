@@ -18,6 +18,13 @@ export class ContentService {
     );
   }
 
+  getBySection(section: string): Observable<any[]> {
+    return this.http.get<any[]>(
+      this.apiUrl + '/section/' + section,
+      { withCredentials: true }
+    );
+  }
+
   create(data: any): Observable<any> {
     return this.http.post(
       this.apiUrl,

@@ -17,6 +17,12 @@
   color: #ffffff;
 }
 
+#about h3 {
+  font-size: 23px;
+  margin-bottom: 25px;
+  color: #ffffff;
+}
+
 .about-container p {
   color: #9ca3af;
   font-size: 17px;

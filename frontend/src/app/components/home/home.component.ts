@@ -9,12 +9,18 @@ import { ContentService } from '../../services/content.service';
 export class HomeComponent implements OnInit {
   dynamicSections: any[] = [];
 
-  constructor(private contentService: ContentService) {}
+  constructor(
+    private contentService: ContentService
+  ) {}
 
   ngOnInit() {
-    this.contentService.getAll().subscribe(
-      (items) => { this.dynamicSections = items; },
-      (err) => console.error(err)
+    this.contentService.getBySection('dynamic').subscribe(
+      (items) => { 
+        this.dynamicSections = items; 
+      },
+      (err) => {
+        console.error(err)
+      }
     );
   }
 }

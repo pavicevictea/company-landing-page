@@ -1,7 +1,7 @@
-<section id="hero">
+<section id="hero" *ngIf="heroContent !== null">
   <div class="hero-content">
-    <h1>Software Built Around Your Business</h1>
-    <p>Custom web and software solutions designed to solve real business needs</p>
+    <h1>{{ heroContent.title }}</h1>
+    <p>{{ heroContent.content }}</p>
     <a (click)="scrollTo('contact')">Contact Us</a>
   </div>
 </section>

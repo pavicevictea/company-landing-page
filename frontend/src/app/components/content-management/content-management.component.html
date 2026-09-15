@@ -8,57 +8,138 @@
   <div *ngIf="successMessage" class="alert success">{{ successMessage }}</div>
   <div *ngIf="errorMessage" class="alert error">{{ errorMessage }}</div>
   <main class="admin-preview">
-    <app-hero></app-hero>
-    <app-services></app-services>
-    <app-about></app-about>
-    <app-contact></app-contact>
-    <section class="dynamic-admin-section" *ngFor="let item of contentItems">
-      <div class="container">
-        <div *ngIf="editingId !== item.id">
-          <h2>{{ item.title }}</h2>
-          <p>{{ item.content }}</p>
-          <div class="action-buttons">
-            <button type="button" class="btn-edit" (click)="startEdit(item)">Edit</button>
-            <button type="button" class="btn-delete" (click)="deleteContent(item.id, item.title)">Delete</button>
+    <div class="container">
+      <section class="content-group">
+        <h2>Default Content</h2>
+        <p class="section-description">
+          These sections are part of the main website structure.
+          Their content can be edited, but they cannot be deleted.
+        </p>
+        <h3 class="admin-subheading">Hero</h3>
+        <div class="content-card" *ngFor="let item of getItemsBySection('hero')">
+          <div *ngIf="editingId !== item.id">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.content }}</p>
+            <div class="action-buttons">
+              <button type="button" class="btn-edit" (click)="startEdit(item)">Edit</button>
+            </div>
+          </div>
+          <div *ngIf="editingId === item.id" class="inline-edit-form">
+            <h3>Edit Hero</h3>
+            <div class="form-group">
+              <label>Title</label>
+              <input type="text" [(ngModel)]="editTitle" name="editTitle">
+            </div>
+            <div class="form-group">
+              <label>Content</label>
+              <textarea rows="5" [(ngModel)]="editContentText" name="editContentText">
+              </textarea>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-save" (click)="saveEdit(item)">Save Changes</button>
+              <button type="button" class="btn-cancel" (click)="cancelEdit()">Cancel</button>
+            </div>
           </div>
         </div>
-        <div *ngIf="editingId === item.id" class="inline-edit-form">
-          <h3>Edit Section</h3>
-          <div class="form-group">
-            <label>Title</label>
-            <input type="text" [(ngModel)]="editTitle" name="editTitle">
+        <h3 class="admin-subheading">Services</h3>
+        <div class="content-card" *ngFor="let item of getItemsBySection('services')">
+          <div *ngIf="editingId !== item.id">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.content }}</p>
+            <div class="action-buttons">
+              <button type="button" class="btn-edit" (click)="startEdit(item)">Edit</button>
+            </div>
           </div>
-          <div class="form-group">
-            <label>Content</label>
-            <textarea rows="5" [(ngModel)]="editContentText" name="editContentText"></textarea>
-          </div>
-          <div class="form-actions">
-            <button type="button" class="btn-save" (click)="saveEdit(item.id)">Save Changes</button>
-            <button type="button" class="btn-cancel" (click)="cancelEdit()">Cancel</button>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section class="add-section-area">
-      <div class="container" style="text-align: center;">
-        <button *ngIf="!isAddingNew" type="button" class="btn-add-trigger" (click)="isAddingNew = true">+ Add New Section</button>
-        <div *ngIf="isAddingNew" class="inline-add-form">
-          <h3>Add New Section</h3>
-          <div class="form-group">
-            <label>Section Title</label>
-            <input type="text" [(ngModel)]="newTitle" name="newTitle" placeholder="e.g. Our Partners">
-          </div>
-          <div class="form-group">
-            <label>Section Content</label>
-            <textarea rows="5" [(ngModel)]="newContentText" name="newContentText" placeholder="Enter paragraph text..."></textarea>
-          </div>
-          <div class="form-actions">
-            <button type="button" class="btn-save" [disabled]="!newTitle.trim() || !newContentText.trim()" (click)="saveNewSection()">Publish Section</button>
-            <button type="button" class="btn-cancel" (click)="isAddingNew = false">Cancel</button>
+          <div *ngIf="editingId === item.id" class="inline-edit-form">
+            <h3>Edit Service</h3>
+            <div class="form-group">
+              <label>Service Name</label>
+              <input type="text" [(ngModel)]="editTitle" name="editTitle">
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea rows="5" [(ngModel)]="editContentText" name="editContentText"></textarea>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-save" (click)="saveEdit(item)">Save Changes</button>
+              <button type="button" class="btn-cancel" (click)="cancelEdit()">Cancel</button>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+        <h3 class="admin-subheading">About</h3>
+        <div class="content-card" *ngFor="let item of getItemsBySection('about')">
+          <div *ngIf="editingId !== item.id">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.content }}</p>
+            <div class="action-buttons">
+              <button type="button" class="btn-edit" (click)="startEdit(item)">Edit</button>
+            </div>
+          </div>
+          <div *ngIf="editingId === item.id" class="inline-edit-form">
+            <h3>Edit About Content</h3>
+            <div class="form-group">
+              <label>Title</label>
+              <input type="text" [(ngModel)]="editTitle" name="editTitle">
+            </div>
+            <div class="form-group">
+              <label>Content</label>
+              <textarea rows="5" [(ngModel)]="editContentText" name="editContentText"></textarea>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-save" (click)="saveEdit(item)">Save Changes</button>
+              <button type="button" class="btn-cancel" (click)="cancelEdit()">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="content-group">
+        <h2>Dynamic Content</h2>
+        <p class="section-description">These sections can be edited or deleted.</p>
+        <div class="content-card" *ngFor="let item of getItemsBySection('dynamic')">
+          <div *ngIf="editingId !== item.id">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.content }}</p>
+            <div class="action-buttons">
+              <button type="button" class="btn-edit" (click)="startEdit(item)">Edit</button>
+              <button type="button" class="btn-delete" (click)="deleteContent(item.id, item.title)">Delete</button>
+            </div>
+          </div>
+          <div *ngIf="editingId === item.id" class="inline-edit-form">
+            <h3>Edit Section</h3>
+            <div class="form-group">
+              <label>Title</label>
+              <input type="text" [(ngModel)]="editTitle" name="editTitle">
+            </div>
+            <div class="form-group">
+              <label>Content</label>
+              <textarea rows="5" [(ngModel)]="editContentText" name="editContentText"></textarea>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-save" (click)="saveEdit(item)">Save Changes</button>
+              <button type="button" class="btn-cancel" (click)="cancelEdit()">Cancel</button>
+            </div>
+          </div>
+        </div>
+        <section class="add-section-area">
+          <button *ngIf="!isAddingNew" type="button" class="btn-add-trigger" (click)="isAddingNew = true">+ Add New Section</button>
+          <div *ngIf="isAddingNew" class="inline-add-form">
+            <h3>Add New Section</h3>
+            <div class="form-group">
+              <label>Section Title</label>
+              <input type="text" [(ngModel)]="newTitle" name="newTitle" placeholder="e.g. Our Partners">
+            </div>
+            <div class="form-group">
+              <label>Section Content</label>
+              <textarea rows="5" [(ngModel)]="newContentText" name="newContentText" placeholder="Enter paragraph text..."></textarea>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-save" [disabled]=" !newTitle.trim() || !newContentText.trim()" (click)="saveNewSection()">Publish Section</button>
+              <button type="button" class="btn-cancel" (click)="isAddingNew = false">Cancel</button>
+            </div>
+          </div>
+        </section>
+      </section>
+    </div>
   </main>
   <app-footer></app-footer>
 </div>

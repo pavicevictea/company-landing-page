@@ -35,8 +35,18 @@ export class ContentManagementComponent implements OnInit {
 
   loadContent() {
     this.contentService.getAll().subscribe(
-      (items) => { this.contentItems = items; },
-      () => { this.errorMessage = 'Failed to load content from database.'; }
+      (items) => { 
+        this.contentItems = items; 
+      },
+      () => { 
+        this.errorMessage = 'Failed to load content from database.'; 
+      }
+    );
+  }
+
+  getItemsBySection(section: string): any[] {
+    return this.contentItems.filter(
+      (item) => item.section === section
     );
   }
 
@@ -53,29 +63,48 @@ export class ContentManagementComponent implements OnInit {
     this.editContentText = '';
   }
 
-  saveEdit(id: number) {
-    if (!this.editTitle.trim() || !this.editContentText.trim()) return;
-    this.contentService.update(id, { title: this.editTitle, content: this.editContentText }).subscribe(
+  saveEdit(item: any) {
+    if (!this.editTitle.trim() || !this.editContentText.trim()) {
+      return;
+    }
+    this.contentService.update(
+      item.id, 
+      { 
+        title: this.editTitle, 
+        content: this.editContentText 
+      }
+    ).subscribe(
       () => {
         this.successMessage = 'Section updated.';
+        this.errorMessage = '';
         this.cancelEdit();
         this.loadContent();
       },
-      () => { this.errorMessage = 'Failed to update section.'; }
+      () => { 
+        this.errorMessage = 'Failed to update section.'; 
+      }
     );
   }
 
   saveNewSection() {
-    if (!this.newTitle.trim() || !this.newContentText.trim()) return;
-    this.contentService.create({ title: this.newTitle, content: this.newContentText }).subscribe(
+    if (!this.newTitle.trim() || !this.newContentText.trim()) {
+      return;
+    }
+    this.contentService.create({ 
+      title: this.newTitle, 
+      content: this.newContentText 
+    }).subscribe(
       () => {
         this.successMessage = 'New section published.';
+        this.errorMessage = '';
         this.newTitle = '';
         this.newContentText = '';
         this.isAddingNew = false;
         this.loadContent();
       },
-      () => { this.errorMessage = 'Failed to add new section.'; }
+      () => { 
+        this.errorMessage = 'Failed to add new section.'; 
+      }
     );
   }
 
@@ -87,16 +116,21 @@ export class ContentManagementComponent implements OnInit {
     this.contentService.delete(id).subscribe(
       () => {
         this.successMessage = 'Section deleted.';
+        this.errorMessage = '';
         this.loadContent();
       },
-      () => { this.errorMessage = 'Failed to delete section.'; }
+      () => { 
+        this.errorMessage = 'Failed to delete section.'; 
+      }
     );
   }
 
   logout() {
     this.authService.logout().subscribe(() => {
       this.router.navigate(['/']).then(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ 
+          top: 0, 
+          behavior: 'smooth' });
       });
     });
   }

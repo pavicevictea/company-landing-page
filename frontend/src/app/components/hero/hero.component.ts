@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { ContentService } from 'src/app/services/content.service';
+import { Component, IterableDiffers, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-hero',
@@ -7,9 +8,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeroComponent implements OnInit {
 
-  constructor() { }
+  heroContent: any = null;
+
+  constructor(
+    private contentService: ContentService
+  ) { }
 
   ngOnInit() {
+    this.contentService.getBySection('hero').subscribe(
+      (items) => {
+        if (items.length > 0) {
+          this.heroContent = items[0];
+        }
+      },
+      (error) => {
+        console.error('Error loading hero content:', error);
+      }
+    );
   }
 
   scrollTo(sectionId: string) {
