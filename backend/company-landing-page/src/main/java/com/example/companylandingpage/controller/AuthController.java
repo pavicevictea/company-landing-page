@@ -61,8 +61,8 @@ public class AuthController {
         }
         User user = userRepository.findByUsername(username).orElseThrow();
         return new AuthUserDto(
-                user.getUsername(),
                 user.getName(),
+                user.getUsername(),
                 "USER"
         );
     }
