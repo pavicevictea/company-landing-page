@@ -1,0 +1,63 @@
+.register-page {
+  min-height: 100vh;
+  padding: 120px 20px;
+  background-color: #0b0f19;
+}
+
+.register-container {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 35px;
+  background-color: #111827;
+  border: 1px solid #374151;
+  border-radius: 6px;
+}
+
+.register-container h2 {
+  margin: 0 0 30px;
+  color: #f3f4f6;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  color: #d1d5db;
+}
+
+.form-group input {
+  padding: 12px;
+  background-color: #0b0f19;
+  border: 1px solid #374151;
+  border-radius: 5px;
+  color: #f3f4f6;
+}
+
+.register-container button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ffffff;
+  color: #0b0f19;
+  cursor: pointer;
+}
+
+.register-container button:disabled {
+  background-color: #374151;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+.error-message {
+  margin-top: 20px;
+  color: #f87171;
+}
+
+.success-message {
+  margin-top: 20px;
+  color: #4ade80;
+}

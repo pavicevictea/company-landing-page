@@ -15,6 +15,7 @@ import { LoginComponent } from './components/login/login.component';
 import { ContentManagementComponent } from './components/content-management/content-management.component';
 import { DynamicContentComponent } from './components/dynamic-content/dynamic-content.component';
 import { HomeComponent } from './components/home/home.component';
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { HomeComponent } from './components/home/home.component';
     LoginComponent,
     ContentManagementComponent,
     DynamicContentComponent,
-    HomeComponent
+    HomeComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

@@ -47,10 +47,20 @@ export class AuthService {
         return !!localStorage.getItem('isLoggedIn');
     }
 
-    register(data: any): Observable<any> {
+    register(
+        name: string,
+        username: string,
+        email: string,
+        password: string
+    ): Observable<any> {
         return this.http.post(
             this.apiUrl + '/register',
-            data,
+            {
+                name: name,
+                username: username,
+                email: email,
+                password: password
+            },
             {
                 withCredentials: true
             }
