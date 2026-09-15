@@ -21,8 +21,12 @@ public class AuthService {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new IllegalArgumentException("Email is already registered");
         }
+        if (userRepository.existsByUsername(request.getUsername())) {
+            throw new IllegalArgumentException("Username is already taken");
+        }
         User user = new User(
                 request.getName(),
+                request.getUsername(),
                 request.getEmail(),
                 passwordEncoder.encode(request.getPassword())
         );
