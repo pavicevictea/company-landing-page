@@ -5,25 +5,30 @@
     <form (submit)="register(); $event.preventDefault()">
       <div class="form-group">
         <label for="name">Name</label>
-        <input id="name" type="text" name="name" [value]="name" (input)="name = $any($event.target).value" required>
+        <input id="name" type="text" name="name" [value]="name" (input)="name = $any($event.target).value; validateName()" required>
+        <p *ngIf="nameError" class="field-error">{{ nameError }}</p>
       </div>
       <div class="form-group">
         <label for="username">Username</label>
-        <input id="username" type="text" name="username" [value]="username" (input)="username = $any($event.target).value" required>
+        <input id="username" type="text" name="username" [value]="username" (input)="username = $any($event.target).value; validateUsername()" required>
+        <p *ngIf="usernameError" class="field-error">{{ usernameError }}</p>
       </div>
       <div class="form-group">
         <label for="email">Email</label>
-        <input id="email" type="email" name="email" [value]="email" (input)="email = $any($event.target).value" required>
+        <input id="email" type="email" name="email" [value]="email" (input)="email = $any($event.target).value; validateEmail()" required>
+        <p *ngIf="emailError" class="field-error">{{ emailError }}</p>
       </div>
       <div class="form-group">
         <label for="password">Password</label>
-        <input id="password" type="password" name="password" [value]="password" (input)="password = $any($event.target).value" required>
+        <input id="password" type="password" name="password" [value]="password" (input)="password = $any($event.target).value; validatePassword()" required>
+        <p *ngIf="passwordError" class="field-error">{{ passwordError }}</p>
       </div>
       <div class="form-group">
         <label for="confirmPassword">Confirm Password</label>
-        <input id="confirmPassword" type="password" name="confirmPassword" [value]="confirmPassword" (input)="confirmPassword = $any($event.target).value" required>
+        <input id="confirmPassword" type="password" name="confirmPassword" [value]="confirmPassword" (input)="confirmPassword = $any($event.target).value; validateConfirmPassword()" required>
+        <p *ngIf="confirmPasswordError" class="field-error">{{ confirmPasswordError }}</p>
       </div>
-      <button type="submit" [disabled]="!name || !username || !email || !password || !confirmPassword">Register</button>
+      <button type="submit" [disabled]="!isFormValid()">Register</button>
       <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
       <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
     </form>
