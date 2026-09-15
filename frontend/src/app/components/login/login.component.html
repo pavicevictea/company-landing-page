@@ -14,6 +14,9 @@
         <p *ngIf="passwordError" class="field-error">{{ passwordError }}</p>
       </div>
       <button type="submit" [disabled]="!isFormValid()">Login</button>
+      <p class="register-link">Don't have an account?  
+        <a routerLink="/register">Register</a>
+      </p>
       <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
     </form>
   </div>
