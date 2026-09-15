@@ -70,4 +70,22 @@ export class AuthService {
             }
         );
     }
+
+    checkUsername(username: string): Observable<boolean> {
+        return this.http.get<boolean>(
+            this.apiUrl + '/check-username',
+            {
+                params: new HttpParams().set('username', username)
+            }
+        );
+    }
+
+    checkEmail(email: string): Observable<boolean> {
+        return this.http.get<boolean>(
+            this.apiUrl + '/check-email',
+            {
+                params: new HttpParams().set('email', email)
+            }
+        );
+    }
 }

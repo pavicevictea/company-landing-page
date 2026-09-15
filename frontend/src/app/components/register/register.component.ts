@@ -24,6 +24,13 @@ export class RegisterComponent implements OnInit {
   errorMessage = ''
   successMessage = '';
 
+  usernameAvailable = false;
+  usernameChecking = false;
+  usernameChecked = false;
+  emailAvailable = false;
+  emailChecking = false;
+  emailChecked = false;
+
   constructor(
     private authService: AuthService,
     private router: Router
@@ -41,24 +48,71 @@ export class RegisterComponent implements OnInit {
   }
 
   validateUsername() {
-    if(!this.username.trim()){
+    this.usernameChecked = false;
+    this.usernameAvailable = false;
+
+    if (!this.username.trim()) {
       this.usernameError = 'Username is required';
-    } else {
-      this.usernameError = '';
+      return;
     }
+
+    this.usernameError = '';
+    this.usernameChecking = true;
+
+    this.authService.checkUsername(this.username.trim()).subscribe(
+      available => {
+        this.usernameChecking = false;
+        this.usernameChecked = true;
+        this.usernameAvailable = available;
+        if (!available) {
+          this.usernameError = 'Username is already taken';
+        }
+      },
+      () => {
+        this.usernameChecking = false;
+        this.usernameChecked = false;
+        this.usernameAvailable = false;
+        this.usernameError = 'Unable to check username availability';
+      }
+    );
   }
 
   validateEmail() {
+    this.emailChecked = false;
+    this.emailAvailable = false;
+
     if (!this.email.trim()) {
       this.emailError = 'Email is required';
       return;
     }
+
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if(!emailPattern.test(this.email)){
+
+    if (!emailPattern.test(this.email)) {
       this.emailError = 'Please enter a valid email address';
-    } else {
-      this.emailError = '';
+      return;
     }
+
+    this.emailError = '';
+    this.emailChecking = true;
+
+    this.authService.checkEmail(this.email.trim()).subscribe(
+      available => {
+        this.emailChecking = false;
+        this.emailChecked = true;
+        this.emailAvailable = available;
+        if (!available) {
+          this.emailError =
+            'This email is already associated with an existing account';
+        }
+      },
+      () => {
+        this.emailChecking = false;
+        this.emailChecked = false;
+        this.emailAvailable = false;
+        this.emailError = 'Unable to check email availability';
+      }
+    );
   }
 
   validatePassword() {
@@ -86,7 +140,11 @@ export class RegisterComponent implements OnInit {
     return (
       this.name.trim().length > 0 &&
       this.username.trim().length > 0 &&
+      this.usernameChecked &&
+      this.usernameAvailable &&
       this.email.trim().length > 0 &&
+      this.emailChecked &&
+      this.emailAvailable &&
       this.isEmailValid() &&
       this.password.length >= 8 &&
       this.confirmPassword.length > 0 &&
