@@ -1,6 +1,11 @@
 package com.example.companylandingpage.controller;
 
+import com.example.companylandingpage.dto.AuthUserDto;
 import com.example.companylandingpage.dto.RegisterRequest;
+import com.example.companylandingpage.model.AdminUser;
+import com.example.companylandingpage.model.User;
+import com.example.companylandingpage.repository.AdminUserRepository;
+import com.example.companylandingpage.repository.UserRepository;
 import com.example.companylandingpage.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -19,10 +24,14 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final AuthService authService;
+    private final AdminUserRepository adminUserRepository;
+    private final UserRepository userRepository;
 
-    public AuthController(AuthenticationManager authenticationManager, AuthService authService) {
+    public AuthController(AuthenticationManager authenticationManager, AuthService authService, AdminUserRepository adminUserRepository, UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
         this.authService = authService;
+        this.adminUserRepository = adminUserRepository;
+        this.userRepository = userRepository;
     }
 
     @PostMapping("/login")
@@ -37,23 +46,48 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public Authentication me(Authentication authentication) {
-        return authentication;
-    }
-
-    public static class LoginRequest {
-        private String username;
-        private String password;
-
-        public String getUsername() { return username; }
-        public void setUsername(String username) { this.username = username; }
-        public String getPassword() { return password; }
-        public void setPassword(String password) { this.password = password; }
+    public AuthUserDto me(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("Unauthorized");
+        }
+        String username = authentication.getName();
+        AdminUser admin = adminUserRepository.findByUsername(username).orElse(null);
+        if (admin != null) {
+            return new AuthUserDto(
+                    admin.getUsername(),
+                    admin.getUsername(),
+                    "ADMIN"
+            );
+        }
+        User user = userRepository.findByUsername(username).orElseThrow();
+        return new AuthUserDto(
+                user.getUsername(),
+                user.getName(),
+                "USER"
+        );
     }
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public void register(@Valid @RequestBody RegisterRequest request) {
         authService.register(request);
+    }
+
+    public static class LoginRequest {
+        private String username;
+        private String password;
+
+        public String getUsername() {
+            return username;
+        }
+        public void setUsername(String username) {
+            this.username = username;
+        }
+        public String getPassword() {
+            return password;
+        }
+        public void setPassword(String password) {
+            this.password = password;
+        }
     }
 }
