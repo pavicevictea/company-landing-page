@@ -9,14 +9,17 @@ export class AuthService {
 
     private apiUrl = 'http://localhost:8080/api/auth';
 
+    currentUser: any = null;
+
     constructor(private http: HttpClient) {}
 
     login(username: string, password: string): Observable<any> {
-        const body = { username, password };
-
         return this.http.post(
             this.apiUrl + '/login',
-            body,
+            {
+                username: username,
+                password: password
+            },
             {
                 withCredentials: true
             }
@@ -33,6 +36,7 @@ export class AuthService {
     }
 
     logout(): Observable<any> {
+        this.currentUser = null;
         localStorage.removeItem('isLoggedIn');
         return this.http.post(
             this.apiUrl + '/logout',
