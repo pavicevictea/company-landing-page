@@ -79,6 +79,16 @@ public class AuthController {
         authService.register(request);
     }
 
+    @GetMapping("/check-username")
+    public boolean checkUsername(@RequestParam String username) {
+        return !userRepository.existsByUsername(username);
+    }
+
+    @GetMapping("/check-email")
+    public boolean checkEmail(@RequestParam String email) {
+        return !userRepository.existsByEmail(email);
+    }
+
     public static class LoginRequest {
         private String username;
         private String password;
