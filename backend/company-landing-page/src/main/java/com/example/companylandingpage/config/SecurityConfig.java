@@ -77,6 +77,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/me").authenticated()
+                        .requestMatchers("/api/users/me").hasRole("USER")
                         .requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/logout", "/api/auth/check-username", "/api/auth/check-email").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/content/**").permitAll()
