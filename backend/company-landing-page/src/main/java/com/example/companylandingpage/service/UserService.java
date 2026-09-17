@@ -4,7 +4,9 @@ import com.example.companylandingpage.dto.UserProfileDto;
 import com.example.companylandingpage.dto.UserUpdateRequest;
 import com.example.companylandingpage.model.User;
 import com.example.companylandingpage.repository.UserRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserService {
 
     private final UserRepository userRepository;
