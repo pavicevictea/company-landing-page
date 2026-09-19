@@ -1,0 +1,42 @@
+<app-navbar></app-navbar>
+<section class="dashboard-page">
+  <div class="dashboard-container">
+    <div class="dashboard-header">
+      <div>
+        <p class="eyebrow">Dashboard</p>
+        <h1>My Account</h1>
+        <p class="subtitle">View and manage your account information.</p>
+      </div>
+    </div>
+    <div *ngIf="isLoading" class="status-message">Loading your account information...</div>
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+    <div *ngIf="user && !isLoading" class="profile-card">
+      <div class="profile-card-header">
+        <h2>Account Information</h2>
+        <button *ngIf="!isEditing" type="button" class="edit-button" (click)="startEditing()">Edit</button>
+      </div>
+      <div class="profile-fields">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input *ngIf="isEditing" id="name" type="text" [(ngModel)]="user.name">
+          <p *ngIf="!isEditing" class="field-value">{{ user.name }}</p>
+        </div>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input id="username" type="text" [value]="user.username" disabled>
+          <p class="field-note">Username cannot be changed.</p>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input *ngIf="isEditing" id="email" type="email" [(ngModel)]="user.email">
+          <p *ngIf="!isEditing" class="field-value">{{ user.email }}</p>
+        </div>
+      </div>
+      <div *ngIf="isEditing" class="form-actions">
+        <button type="button" class="cancel-button" (click)="cancelEditing()" [disabled]="isSaving">Cancel</button>
+        <button type="button" class="save-button" (click)="saveChanges()" [disabled]="isSaving">{{ isSaving ? 'Saving...' : 'Save Changes' }}</button>
+      </div>
+    </div>
+  </div>
+</section>

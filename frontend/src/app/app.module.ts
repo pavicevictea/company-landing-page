@@ -17,6 +17,7 @@ import { DynamicContentComponent } from './components/dynamic-content/dynamic-co
 import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/register/register.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
+import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
     DynamicContentComponent,
     HomeComponent,
     RegisterComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    UserDashboardComponent
   ],
   imports: [
     BrowserModule,
