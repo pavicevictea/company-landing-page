@@ -1,18 +1,22 @@
 package com.example.companylandingpage.service;
 
+import com.example.companylandingpage.dto.PasswordChangeRequest;
 import com.example.companylandingpage.dto.UserProfileDto;
 import com.example.companylandingpage.dto.UserUpdateRequest;
 import com.example.companylandingpage.model.User;
 import com.example.companylandingpage.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserProfileDto getCurrentUser(String username) {
@@ -44,5 +48,16 @@ public class UserService {
                 savedUser.getUsername(),
                 savedUser.getEmail()
         );
+    }
+
+    public void changePassword(String currentUsername, PasswordChangeRequest request) {
+        User user = userRepository.findByUsername(currentUsername).orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
     }
 }
