@@ -29,16 +29,11 @@ public class UserService {
     public UserProfileDto updateCurrentUser(String currentUsername, UserUpdateRequest request) {
         User user = userRepository.findByUsername(currentUsername).orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        if (!user.getUsername().equals(request.getUsername()) && userRepository.existsByUsername(request.getUsername())) {
-            throw new IllegalArgumentException("Username is already taken");
-        }
-
         if (!user.getEmail().equals(request.getEmail()) && userRepository.existsByEmail(request.getEmail())) {
             throw new IllegalArgumentException("Email is already registered");
         }
 
         user.setName(request.getName());
-        user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
 
         User savedUser = userRepository.save(user);

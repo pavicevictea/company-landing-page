@@ -69,6 +69,7 @@ export class UserDashboardComponent implements OnInit {
 
     this.userService.updateCurrentUser({
       name: this.user.name.trim(),
+      username: this.user.username,
       email: this.user.email.trim()
     }).subscribe(
       updatedUser => {
