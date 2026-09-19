@@ -15,6 +15,11 @@ export interface UserUpdateRequest {
   email: string;
 }
 
+export interface PasswordChangeRequest {
+  currentPassword: string;
+  newPassword: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -42,6 +47,16 @@ export class UserService {
       {
         withCredentials: true
       }
+    );
+  }
+
+  changePassword(
+    request: PasswordChangeRequest
+  ): Observable<void> {
+    return this.http.put<void>(
+      `${this.apiUrl}/me/password`,
+      request,
+      { withCredentials: true }
     );
   }
 }
