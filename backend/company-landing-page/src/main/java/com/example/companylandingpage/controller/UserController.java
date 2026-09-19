@@ -1,9 +1,11 @@
 package com.example.companylandingpage.controller;
 
+import com.example.companylandingpage.dto.PasswordChangeRequest;
 import com.example.companylandingpage.dto.UserProfileDto;
 import com.example.companylandingpage.dto.UserUpdateRequest;
 import com.example.companylandingpage.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,5 +28,11 @@ public class UserController {
     @PutMapping("/me")
     public UserProfileDto updateCurrentUser(@Valid @RequestBody UserUpdateRequest request, Authentication authentication) {
         return userService.updateCurrentUser(authentication.getName(), request);
+    }
+
+    @PutMapping("/me/password")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void changePassword(@Valid @RequestBody PasswordChangeRequest request, Authentication authentication) {
+        userService.changePassword(authentication.getName(), request);
     }
 }
