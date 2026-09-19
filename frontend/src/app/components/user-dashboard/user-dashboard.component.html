@@ -3,7 +3,7 @@
   <div class="dashboard-container">
     <div class="dashboard-header">
       <div>
-        <p class="eyebrow">Dashboard</p>
+        <p class="eyebrow">Customer Dashboard</p>
         <h1>My Account</h1>
         <p class="subtitle">View and manage your account information.</p>
       </div>
@@ -12,31 +12,64 @@
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
     <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
     <div *ngIf="user && !isLoading" class="profile-card">
-      <div class="profile-card-header">
-        <h2>Account Information</h2>
-        <button *ngIf="!isEditing" type="button" class="edit-button" (click)="startEditing()">Edit</button>
-      </div>
-      <div class="profile-fields">
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input *ngIf="isEditing" id="name" type="text" [(ngModel)]="user.name">
-          <p *ngIf="!isEditing" class="field-value">{{ user.name }}</p>
+      <ng-container *ngIf="!isChangingPassword">
+        <div class="profile-card-header">
+          <h2>Account Information</h2>
+          <button *ngIf="!isEditing" type="button" class="edit-button" (click)="startEditing()">Edit</button>
         </div>
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input id="username" type="text" [value]="user.username" disabled>
-          <p class="field-note">Username cannot be changed.</p>
+        <div class="profile-fields">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input *ngIf="isEditing" id="name" type="text" [(ngModel)]="user.name" required>
+            <p *ngIf="!isEditing" class="field-value">{{ user.name }}</p>
+          </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input id="username" type="text" [value]="user.username" disabled>
+            <p class="field-note">Username cannot be changed.</p>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input *ngIf="isEditing" id="email" type="email" [(ngModel)]="user.email" required>
+            <p *ngIf="!isEditing" class="field-value">{{ user.email }}</p>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input *ngIf="isEditing" id="email" type="email" [(ngModel)]="user.email">
-          <p *ngIf="!isEditing" class="field-value">{{ user.email }}</p>
+        <div *ngIf="isEditing" class="form-actions">
+          <button type="button" class="cancel-button" (click)="cancelEditing()" [disabled]="isSaving">Cancel</button>
+          <button type="button" class="save-button" (click)="saveChanges()" [disabled]="isSaving">{{ isSaving ? 'Saving...' : 'Save Changes' }}</button>
         </div>
-      </div>
-      <div *ngIf="isEditing" class="form-actions">
-        <button type="button" class="cancel-button" (click)="cancelEditing()" [disabled]="isSaving">Cancel</button>
-        <button type="button" class="save-button" (click)="saveChanges()" [disabled]="isSaving">{{ isSaving ? 'Saving...' : 'Save Changes' }}</button>
-      </div>
+        <div *ngIf="!isEditing" class="password-section">
+          <div class="password-section-info">
+            <h3>Password</h3>
+            <p>Change your password to keep your account secure.</p>
+          </div>
+          <button type="button" class="edit-button" (click)="startChangingPassword()">Change Password</button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="isChangingPassword">
+        <div class="profile-card-header">
+          <h2>Change Password</h2>
+        </div>
+        <form class="password-form" (ngSubmit)="changePassword()">
+          <div class="form-group">
+            <label for="currentPassword">Current Password</label>
+            <input id="currentPassword" name="currentPassword" type="password" [(ngModel)]="currentPassword" autocomplete="current-password" required>
+          </div>
+          <div class="form-group">
+            <label for="newPassword">New Password</label>
+            <input id="newPassword" name="newPassword" type="password" [(ngModel)]="newPassword" autocomplete="new-password" minlength="8" required>
+            <p class="field-note">Password must contain at least 8 characters.</p>
+          </div>
+          <div class="form-group">
+            <label for="confirmNewPassword">Confirm New Password</label>
+            <input id="confirmNewPassword" name="confirmNewPassword" type="password" [(ngModel)]="confirmNewPassword" autocomplete="new-password" minlength="8" required>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="cancel-button" (click)="cancelChangingPassword()" [disabled]="isSaving">Cancel</button>
+            <button type="submit" class="save-button" [disabled]="isSaving">{{ isSaving ? 'Saving...' : 'Save Password' }}</button>
+          </div>
+        </form>
+      </ng-container>
     </div>
   </div>
 </section>
