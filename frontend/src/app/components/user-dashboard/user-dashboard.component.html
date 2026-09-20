@@ -20,8 +20,9 @@
         <div class="profile-fields">
           <div class="form-group">
             <label for="name">Name</label>
-            <input *ngIf="isEditing" id="name" type="text" [(ngModel)]="user.name" required>
+            <input *ngIf="isEditing" id="name" type="text" name="name" [value]="user.name" (input)="user.name = $any($event.target).value; validateName()" required>
             <p *ngIf="!isEditing" class="field-value">{{ user.name }}</p>
+            <p *ngIf="isEditing && nameError" class="field-error">{{ nameError }}</p>
           </div>
           <div class="form-group">
             <label for="username">Username</label>
@@ -30,8 +31,9 @@
           </div>
           <div class="form-group">
             <label for="email">Email</label>
-            <input *ngIf="isEditing" id="email" type="email" [(ngModel)]="user.email" required>
+            <input *ngIf="isEditing" id="email" type="email" name="email" [value]="user.email" (input)="user.email = $any($event.target).value; validateEmail()" required>
             <p *ngIf="!isEditing" class="field-value">{{ user.email }}</p>
+            <p *ngIf="isEditing && emailError" class="field-error">{{ emailError }}</p>
           </div>
         </div>
         <div *ngIf="isEditing" class="form-actions">
@@ -50,19 +52,22 @@
         <div class="profile-card-header">
           <h2>Change Password</h2>
         </div>
-        <form class="password-form" (ngSubmit)="changePassword()">
+        <form class="password-form" (submit)="changePassword(); $event.preventDefault()">
           <div class="form-group">
             <label for="currentPassword">Current Password</label>
-            <input id="currentPassword" name="currentPassword" type="password" [(ngModel)]="currentPassword" autocomplete="current-password" required>
+            <input id="currentPassword" name="currentPassword" type="password" [value]="currentPassword" (input)="currentPassword = $any($event.target).value; validateCurrentPassword()" autocomplete="current-password" required>
+            <p *ngIf="currentPasswordError" class="field-error">{{ currentPasswordError }}</p>
           </div>
           <div class="form-group">
             <label for="newPassword">New Password</label>
-            <input id="newPassword" name="newPassword" type="password" [(ngModel)]="newPassword" autocomplete="new-password" minlength="8" required>
+            <input id="newPassword" name="newPassword" type="password" [value]="newPassword" (input)="newPassword = $any($event.target).value; validateNewPassword()" autocomplete="new-password" required>
+            <p *ngIf="newPasswordError" class="field-error">{{ newPasswordError }}</p>
             <p class="field-note">Password must contain at least 8 characters.</p>
           </div>
           <div class="form-group">
             <label for="confirmNewPassword">Confirm New Password</label>
-            <input id="confirmNewPassword" name="confirmNewPassword" type="password" [(ngModel)]="confirmNewPassword" autocomplete="new-password" minlength="8" required>
+            <input id="confirmNewPassword" name="confirmNewPassword" type="password" [value]="confirmNewPassword" (input)="confirmNewPassword = $any($event.target).value; validateConfirmNewPassword()" autocomplete="new-password" required>
+            <p *ngIf="confirmNewPasswordError" class="field-error">{{ confirmNewPasswordError }}</p>
           </div>
           <div class="form-actions">
             <button type="button" class="cancel-button" (click)="cancelChangingPassword()" [disabled]="isSaving">Cancel</button>

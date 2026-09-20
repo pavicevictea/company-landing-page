@@ -15,12 +15,18 @@ export class UserDashboardComponent implements OnInit {
   isSaving = false;
   isChangingPassword = false;
 
+  nameError = '';
+  emailError = '';
+
   errorMessage = '';
   successMessage = '';
 
   currentPassword = '';
   newPassword = '';
   confirmNewPassword = '';
+  currentPasswordError = '';
+  newPasswordError = '';
+  confirmNewPasswordError = '';
 
   constructor(
     private userService: UserService
@@ -49,12 +55,16 @@ export class UserDashboardComponent implements OnInit {
   startEditing(): void {
     this.isEditing = true;
     this.isChangingPassword = false;
+    this.nameError = '';
+    this.emailError = '';
     this.errorMessage = '';
     this.successMessage = '';
   }
 
   cancelEditing(): void {
     this.isEditing = false;
+    this.nameError = '';
+    this.emailError = '';
     this.errorMessage = '';
     this.successMessage = '';
     this.loadUser();
@@ -65,14 +75,17 @@ export class UserDashboardComponent implements OnInit {
       return;
     }
 
-    if (!this.user.name.trim() || !this.user.email.trim()) {
-      this.errorMessage = 'Name and email are required.';
+    this.validateName();
+    this.validateEmail();
+
+    this.errorMessage = '';
+    this.successMessage = '';
+
+    if (!this.isProfileFormValid()) {
       return;
     }
 
     this.isSaving = true;
-    this.errorMessage = '';
-    this.successMessage = '';
 
     this.userService.updateCurrentUser({
       name: this.user.name.trim(),
@@ -83,6 +96,8 @@ export class UserDashboardComponent implements OnInit {
         this.user = updatedUser;
         this.isEditing = false;
         this.isSaving = false;
+        this.nameError = '';
+        this.emailError = '';
         this.successMessage = 'Your account information has been updated.';
       },
       error => {
@@ -115,27 +130,14 @@ export class UserDashboardComponent implements OnInit {
   }
 
   changePassword(): void {
+    this.validateCurrentPassword();
+    this.validateNewPassword();
+    this.validateConfirmNewPassword();
+
     this.errorMessage = '';
     this.successMessage = '';
 
-    if (!this.currentPassword || !this.newPassword || !this.confirmNewPassword) {
-      this.errorMessage = 'Please fill in all password fields.';
-      return;
-    }
-
-    if (this.newPassword.length < 8) {
-      this.errorMessage = 'The new password must contain at least 8 characters.';
-      return;
-    }
-
-    if (this.newPassword !== this.confirmNewPassword) {
-      this.errorMessage = 'The new passwords do not match.';
-      return;
-    }
-
-    if (this.currentPassword === this.newPassword) {
-      this.errorMessage =
-        'The new password must be different from the current password.';
+    if (!this.isPasswordFormValid()) {
       return;
     }
 
@@ -172,5 +174,105 @@ export class UserDashboardComponent implements OnInit {
     this.currentPassword = '';
     this.newPassword = '';
     this.confirmNewPassword = '';
+    this.currentPasswordError = '';
+    this.newPasswordError = '';
+    this.confirmNewPasswordError = '';
   }
+
+  validateName(): void {
+    if (!this.user || !this.user.name.trim()) {
+      this.nameError = 'Name is required';
+    } else {
+      this.nameError = '';
+    }
+  }
+
+  validateEmail(): void {
+    if (!this.user || !this.user.email.trim()) {
+      this.emailError = 'Email is required';
+      return;
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(this.user.email)) {
+      this.emailError = 'Please enter a valid email address';
+    } else {
+      this.emailError = '';
+    }
+  }
+
+  isEmailValid(): boolean {
+    if (!this.user) {
+      return false;
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    return emailPattern.test(this.user.email.trim());
+  }
+
+  isProfileFormValid(): boolean {
+    if (!this.user) {
+      return false;
+    }
+
+    return (
+      this.user.name.trim().length > 0 &&
+      this.user.email.trim().length > 0 &&
+      this.isEmailValid() &&
+      !this.nameError &&
+      !this.emailError
+    );
+  }
+
+  validateCurrentPassword(): void {
+    if (!this.currentPassword) {
+      this.currentPasswordError = 'Current password is required';
+    } else {
+      this.currentPasswordError = '';
+    }
+  }
+
+  validateNewPassword(): void {
+    if (!this.newPassword) {
+      this.newPasswordError = 'New password is required';
+    } else if (this.newPassword.length < 8) {
+      this.newPasswordError = 'Password must contain at least 8 characters';
+    } else if (
+      this.currentPassword &&
+      this.newPassword === this.currentPassword
+    ) {
+      this.newPasswordError = 'The new password must be different from the current password';
+    } else {
+      this.newPasswordError = '';
+    }
+    if (this.confirmNewPassword) {
+      this.validateConfirmNewPassword();
+    }
+  }
+
+  validateConfirmNewPassword(): void {
+    if (!this.confirmNewPassword) {
+      this.confirmNewPasswordError = 'Please confirm your new password';
+    } else if (this.newPassword !== this.confirmNewPassword) {
+      this.confirmNewPasswordError = 'Passwords do not match';
+    } else {
+      this.confirmNewPasswordError = '';
+    }
+  }
+
+  isPasswordFormValid(): boolean {
+    return (
+      this.currentPassword.length > 0 &&
+      this.newPassword.length >= 8 &&
+      this.confirmNewPassword.length > 0 &&
+      this.newPassword === this.confirmNewPassword &&
+      this.currentPassword !== this.newPassword &&
+      !this.currentPasswordError &&
+      !this.newPasswordError &&
+      !this.confirmNewPasswordError
+    );
+  }
+
 }

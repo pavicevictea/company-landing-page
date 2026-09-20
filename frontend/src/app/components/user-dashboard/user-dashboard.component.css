@@ -234,6 +234,12 @@
   margin-top: 6px;
 }
 
+.field-error {
+  margin: 0;
+  color: #f87171;
+  font-size: 14px;
+}
+
 @media (max-width: 600px) {
   .password-section {
     align-items: flex-start;
