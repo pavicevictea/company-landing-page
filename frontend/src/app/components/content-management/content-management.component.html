@@ -41,31 +41,7 @@
             </div>
           </div>
         </div>
-        <h3 class="admin-subheading">Services</h3>
-        <div class="content-card" *ngFor="let item of getItemsBySection('services')">
-          <div *ngIf="editingId !== item.id">
-            <h3>{{ item.title }}</h3>
-            <p>{{ item.content }}</p>
-            <div class="action-buttons">
-              <button type="button" class="btn-edit" (click)="startEdit(item)">Edit</button>
-            </div>
-          </div>
-          <div *ngIf="editingId === item.id" class="inline-edit-form">
-            <h3>Edit Service</h3>
-            <div class="form-group">
-              <label>Service Name</label>
-              <input type="text" [(ngModel)]="editTitle" name="editTitle">
-            </div>
-            <div class="form-group">
-              <label>Description</label>
-              <textarea rows="5" [(ngModel)]="editContentText" name="editContentText"></textarea>
-            </div>
-            <div class="form-actions">
-              <button type="button" class="btn-save" (click)="saveEdit(item)">Save Changes</button>
-              <button type="button" class="btn-cancel" (click)="cancelEdit()">Cancel</button>
-            </div>
-          </div>
-        </div>
+        <app-service-management></app-service-management>
         <h3 class="admin-subheading">About</h3>
         <div class="content-card" *ngFor="let item of getItemsBySection('about')">
           <div *ngIf="editingId !== item.id">
