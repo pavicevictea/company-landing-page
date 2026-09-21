@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ContentService } from 'src/app/services/content.service';
+import { ServiceService, ServiceItem } from 'src/app/services/service.service';
 
 @Component({
   selector: 'app-services',
@@ -8,21 +8,25 @@ import { ContentService } from 'src/app/services/content.service';
 })
 export class ServicesComponent implements OnInit {
 
-  services: any[] = [];
+  services: ServiceItem[] = [];
 
   constructor(
-    private contentService: ContentService
+    private serviceService: ServiceService
   ) { }
 
-  ngOnInit() {
-    this.contentService.getBySection('services').subscribe(
-      (items) => {
-        this.services = items;
+  ngOnInit(): void {
+    this.loadServices();
+  }
+
+  loadServices(): void {
+    this.serviceService.getAll().subscribe({
+      next: (services) => {
+        this.services = services;
       },
-      (error) => {
+      error: (error) => {
         console.error('Error loading services:', error);
       }
-    );
+    });
   }
 
 }
