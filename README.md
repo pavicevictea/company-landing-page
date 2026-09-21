@@ -43,6 +43,28 @@ Implemented user registration and authentication.
 - Login/logout and session management
 - Role-based access for users and administrators
 
+## Task 5 - Customer Dashboard
+
+Implemented an authenticated customer dashboard connected to the backend and database.
+
+- View account information
+- Retrieve user data from the backend and database
+- Update account information
+- Authenticated access control
+- Integration with the existing authentication system
+
+## Task 6 - Company Service Management
+
+Implemented a service management system for managing the services displayed on the public website.
+
+- Create new services
+- View all available services
+- Update existing services
+- Delete services
+- Admin-only service management
+- Dynamic service retrieval from the backend and database
+- Automatic reflection of service changes on the public website
+
 ## Running the Project
 
 ### Backend
