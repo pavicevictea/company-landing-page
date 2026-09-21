@@ -18,6 +18,7 @@ import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/register/register.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
+import { ServiceManagementComponent } from './components/service-management/service-management.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { UserDashboardComponent } from './components/user-dashboard/user-dashboa
     HomeComponent,
     RegisterComponent,
     WelcomeComponent,
-    UserDashboardComponent
+    UserDashboardComponent,
+    ServiceManagementComponent
   ],
   imports: [
     BrowserModule,

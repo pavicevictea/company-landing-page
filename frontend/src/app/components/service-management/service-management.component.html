@@ -1,0 +1,47 @@
+<section class="service-management">
+  <h2>Services</h2>
+  <p class="section-description">Manage the services displayed on the public website.</p>
+  <div class="service-item" *ngFor="let service of services">
+    <div class="service-info" *ngIf="editingId !== service.id">
+      <h3>{{ service.title }}</h3>
+      <p>{{ service.description }}</p>
+      <div class="service-actions">
+        <button type="button" class="btn-service-edit" (click)="startEdit(service)">Edit</button>
+        <button type="button" class="btn-service-delete" (click)="deleteService(service.id)">Delete</button>
+      </div>
+    </div>
+    <div class="service-form" *ngIf="editingId === service.id">
+      <h3>Edit Service</h3>
+      <div class="form-group">
+        <label for="service-title-{{ service.id }}">Title</label>
+        <input id="service-title-{{ service.id }}" type="text" [value]="title" (input)="title = $any($event.target).value" placeholder="Service title">
+      </div>
+      <div class="form-group">
+        <label for="service-description-{{ service.id }}">Description</label>
+        <textarea id="service-description-{{ service.id }}" [value]="description" (input)="description = $any($event.target).value" placeholder="Service description" rows="5"></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-service-save" (click)="saveService()">Save Changes</button>
+        <button type="button" class="btn-service-cancel" (click)="cancelEdit()">Cancel</button>
+      </div>
+    </div>
+  </div>
+  <div class="add-service-area">
+    <button type="button" class="btn-add-service" (click)="startCreate()">Add Service</button>
+    <div class="service-form" *ngIf="isAdding">
+      <h3>Add New Service</h3>
+      <div class="form-group">
+        <label for="new-service-title">Title</label>
+        <input id="new-service-title" type="text" [value]="title" (input)="title = $any($event.target).value" placeholder="Service title">
+      </div>
+      <div class="form-group">
+        <label for="new-service-description">Description</label>
+        <textarea id="new-service-description" [value]="description" (input)="description = $any($event.target).value" placeholder="Service description" rows="5"></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-service-save" (click)="saveService()">Create Service</button>
+        <button type="button" class="btn-service-cancel" (click)="cancelEdit()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</section>
