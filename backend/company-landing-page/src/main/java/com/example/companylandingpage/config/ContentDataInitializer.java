@@ -1,7 +1,9 @@
 package com.example.companylandingpage.config;
 
 import com.example.companylandingpage.model.ContentItem;
+import com.example.companylandingpage.model.ServiceItem;
 import com.example.companylandingpage.repository.ContentRepository;
+import com.example.companylandingpage.repository.ServiceRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -10,9 +12,11 @@ import java.util.List;
 @Component
 public class ContentDataInitializer implements CommandLineRunner {
     private final ContentRepository contentRepository;
+    private final ServiceRepository serviceRepository;
 
-    public ContentDataInitializer(ContentRepository contentRepository) {
+    public ContentDataInitializer(ContentRepository contentRepository, ServiceRepository serviceRepository) {
         this.contentRepository = contentRepository;
+        this.serviceRepository = serviceRepository;
     }
 
     @Override
@@ -26,7 +30,7 @@ public class ContentDataInitializer implements CommandLineRunner {
         }
         contentRepository.saveAll(existingItems);
         createHeroContent();
-        createServicesContent();
+        createServices();
         createAboutContent();
     }
 
@@ -43,33 +47,25 @@ public class ContentDataInitializer implements CommandLineRunner {
         contentRepository.save(hero);
     }
 
-    private void createServicesContent() {
-        if (!contentRepository.findBySection("services").isEmpty()) {
+    private void createServices() {
+        if (serviceRepository.count() > 0) {
             return;
         }
-        contentRepository.save(new ContentItem(
-                "services",
+        serviceRepository.save(new ServiceItem(
                 "Web Development",
-                "We create websites and web applications that are fast, reliable, and easy to maintain",
-                false
+                "We create websites and web applications that are fast, reliable, and easy to maintain"
         ));
-        contentRepository.save(new ContentItem(
-                "services",
+        serviceRepository.save(new ServiceItem(
                 "Cloud & DevOps",
-                "We set up and manage the infrastructure needed to run your applications reliably",
-                false
+                "We set up and manage the infrastructure needed to run your applications reliably"
         ));
-        contentRepository.save(new ContentItem(
-                "services",
+        serviceRepository.save(new ServiceItem(
                 "Backend Development",
-                "We develop APIs, databases, and server-side systems that keep your applications running smoothly",
-                false
+                "We develop APIs, databases, and server-side systems that keep your applications running smoothly"
         ));
-        contentRepository.save(new ContentItem(
-                "services",
+        serviceRepository.save(new ServiceItem(
                 "Software Maintenance",
-                "We maintain and improve existing software to keep it secure, stable, and up to date",
-                false
+                "We maintain and improve existing software to keep it secure, stable, and up to date"
         ));
     }
 
