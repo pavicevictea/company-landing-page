@@ -19,6 +19,10 @@ public class ContactInquiry {
     @Column(length = 2000)
     private String message;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private InquiryStatus status = InquiryStatus.PENDING;
+
     public ContactInquiry() {}
 
     public ContactInquiry(String name, String email, String subject, String message){
@@ -62,5 +66,13 @@ public class ContactInquiry {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public InquiryStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(InquiryStatus status) {
+        this.status = status;
     }
 }
