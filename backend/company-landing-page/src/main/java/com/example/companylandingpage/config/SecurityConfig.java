@@ -80,6 +80,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/***").hasRole("USER")
                         .requestMatchers(HttpMethod.GET, "/api/services").permitAll()
                         .requestMatchers("/api/services/**").hasRole("ADMIN")
+                        .requestMatchers("/api/admin/requests/**").hasRole("ADMIN")
                         .requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/logout", "/api/auth/check-username", "/api/auth/check-email").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/content/**").permitAll()
