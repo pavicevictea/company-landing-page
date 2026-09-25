@@ -2,6 +2,10 @@
   <header class="admin-navbar">
     <div class="nav-container">
       <span class="logo-text">Example Dev - Admin Panel</span>
+      <nav class="admin-nav">
+        <a routerLink="/admin/content">Content Management</a>
+        <a routerLink="/admin/customer-requests">Customer Requests</a>
+      </nav>
       <button type="button" class="btn-logout" (click)="logout()">Logout</button>
     </div>
   </header>

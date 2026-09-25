@@ -14,11 +14,7 @@ const routes: Routes = [
   { path: 'admin/content', component: ContentManagementComponent, canActivate: [AuthGuard] },
   { path: 'register', component: RegisterComponent},
   { path: 'dashboard', component: UserDashboardComponent, canActivate: [AuthGuard] },
-  {
-  path: 'admin/customer-requests',
-  component: CustomerRequestsComponent,
-  canActivate: [AuthGuard]
-},
+  { path: 'admin/customer-requests', component: CustomerRequestsComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '' }
 ];
 
