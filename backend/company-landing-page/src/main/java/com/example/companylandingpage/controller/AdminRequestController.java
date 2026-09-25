@@ -3,6 +3,7 @@ package com.example.companylandingpage.controller;
 import com.example.companylandingpage.dto.CustomerRequestDto;
 import com.example.companylandingpage.dto.UpdateRequestStatus;
 import com.example.companylandingpage.model.ContactInquiry;
+import com.example.companylandingpage.model.InquiryStatus;
 import com.example.companylandingpage.repository.ContactInquiryRepository;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -38,12 +39,18 @@ public class AdminRequestController {
 
     @PatchMapping("/{id}/status")
     public ResponseEntity<CustomerRequestDto> updateStatus(@PathVariable Long id, @Valid @RequestBody UpdateRequestStatus request) {
-        return inquiryRepository.findById(id)
-                .map(inquiry -> {
-                    inquiry.setStatus(request.getStatus());
-                    ContactInquiry saved = inquiryRepository.save(inquiry);
-                    return ResponseEntity.ok(new CustomerRequestDto(saved));
-                })
-                .orElse(ResponseEntity.notFound().build());
+        ContactInquiry inquiry = inquiryRepository.findById(id).orElse(null);
+        if (inquiry == null) {
+            return ResponseEntity.notFound().build();
+        }
+        if (inquiry.getStatus() == InquiryStatus.RESOLVED) {
+            return ResponseEntity.badRequest().build();
+        }
+        if (inquiry.getStatus() == InquiryStatus.IN_PROGRESS && request.getStatus() == InquiryStatus.PENDING) {
+            return ResponseEntity.badRequest().build();
+        }
+        inquiry.setStatus(request.getStatus());
+        ContactInquiry saved = inquiryRepository.save(inquiry);
+        return ResponseEntity.ok(new CustomerRequestDto(saved));
     }
 }
