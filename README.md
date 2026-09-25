@@ -65,6 +65,15 @@ Implemented a service management system for managing the services displayed on t
 - Dynamic service retrieval from the backend and database
 - Automatic reflection of service changes on the public website
 
+## Task 7 - Customer Request Management
+
+Implemented a customer request management system.
+
+- Submit and store customer requests
+- Admin request management
+- View and update request status
+- Frontend, backend, and database integration
+
 ## Running the Project
 
 ### Backend
