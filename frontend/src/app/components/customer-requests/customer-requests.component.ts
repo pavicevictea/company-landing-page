@@ -43,7 +43,14 @@ export class CustomerRequestsComponent implements OnInit {
     this.successMessage = '';
     this.contactService.getCustomerRequests().subscribe({
       next: (requests) => {
-        this.requests = requests;
+        this.requests = requests.sort((a, b) => {
+          const priority: { [key in InquiryStatus]: number } = {
+            PENDING: 1,
+            IN_PROGRESS: 2,
+            RESOLVED: 3
+          };
+          return priority[a.status] - priority[b.status];
+        });
         this.loading = false;
         if (this.selectedRequest) {
           const selectedId = this.selectedRequest.id;
@@ -84,11 +91,20 @@ export class CustomerRequestsComponent implements OnInit {
       .updateRequestStatus(requestId, this.selectedStatus)
       .subscribe({
         next: (updatedRequest) => {
-          this.requests = this.requests.map(request =>
-            request.id === updatedRequest.id
-              ? updatedRequest
-              : request
-          );
+          this.requests = this.requests
+            .map(request =>
+              request.id === updatedRequest.id
+                ? updatedRequest
+                : request
+            )
+            .sort((a, b) => {
+              const priority: { [key in InquiryStatus]: number } = {
+                PENDING: 1,
+                IN_PROGRESS: 2,
+                RESOLVED: 3
+              };
+              return priority[a.status] - priority[b.status];
+            });
           this.selectedRequest = updatedRequest;
           this.selectedStatus = updatedRequest.status;
           this.successMessage = 'Request status updated.';
