@@ -35,7 +35,7 @@
             <p><strong>Email:</strong>{{ request.email }}</p>
             <h4 class="request-message-heading">Message</h4>
             <p class="request-message">{{ request.message }}</p>
-            <div *ngIf="!selectedRequest || selectedRequest.id !== request.id" class="action-buttons">
+            <div *ngIf="(!selectedRequest || selectedRequest.id !== request.id) && request.status !== 'RESOLVED'" class="action-buttons">
                 <button type="button" class="btn-edit" (click)="selectRequest(request)">Manage Request</button>
             </div>
             <div *ngIf="selectedRequest && selectedRequest.id === request.id" class="inline-edit-form">
