@@ -19,6 +19,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
 import { ServiceManagementComponent } from './components/service-management/service-management.component';
+import { CustomerRequestsComponent } from './components/customer-requests/customer-requests.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { ServiceManagementComponent } from './components/service-management/serv
     RegisterComponent,
     WelcomeComponent,
     UserDashboardComponent,
-    ServiceManagementComponent
+    ServiceManagementComponent,
+    CustomerRequestsComponent
   ],
   imports: [
     BrowserModule,

@@ -6,6 +6,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/register/register.component';
 import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
+import { CustomerRequestsComponent } from './components/customer-requests/customer-requests.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -13,6 +14,11 @@ const routes: Routes = [
   { path: 'admin/content', component: ContentManagementComponent, canActivate: [AuthGuard] },
   { path: 'register', component: RegisterComponent},
   { path: 'dashboard', component: UserDashboardComponent, canActivate: [AuthGuard] },
+  {
+  path: 'admin/customer-requests',
+  component: CustomerRequestsComponent,
+  canActivate: [AuthGuard]
+},
   { path: '**', redirectTo: '' }
 ];
 

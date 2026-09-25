@@ -1,0 +1,56 @@
+<div class="admin-wrapper">
+  <header class="admin-navbar">
+    <div class="nav-container">
+      <span class="logo-text">Example Dev - Admin Panel</span>
+      <button type="button" class="btn-logout" (click)="logout()">Logout</button>
+    </div>
+  </header>
+  <div *ngIf="errorMessage" class="alert error">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="alert success">{{ successMessage }}</div>
+  <main class="admin-preview">
+    <div class="container">
+      <section class="content-group">
+        <h2>Customer Requests</h2>
+        <p class="section-description">View customer inquiries and manage their status.</p>
+        <div class="requests-toolbar">
+          <h3 class="admin-subheading">All Requests ({{ requests.length }})</h3>
+          <button type="button" class="btn-edit" (click)="loadRequests()" [disabled]="loading">{{ loading ? 'Loading...' : 'Refresh' }}</button>
+        </div>
+        <p *ngIf="loading" class="section-description">Loading requests...</p>
+        <div *ngIf="!loading">
+          <p *ngIf="requests.length === 0" class="section-description">No customer requests found.</p>
+          <div *ngFor="let request of requests" class="content-card request-card">
+            <div class="request-card-header">
+              <div class="request-title">
+                <h3>{{ request.subject }}</h3>
+                <p class="request-meta">Request #{{ request.id }}</p>
+              </div>
+              <span class="status" [ngClass]="request.status.toLowerCase()">{{ getStatusLabel(request.status) }}</span>
+            </div>
+            <p><strong>Name:</strong>{{ request.name }}</p>
+            <p><strong>Email:</strong>{{ request.email }}</p>
+            <h4 class="request-message-heading">Message</h4>
+            <p class="request-message">{{ request.message }}</p>
+            <div *ngIf="!selectedRequest || selectedRequest.id !== request.id" class="action-buttons">
+                <button type="button" class="btn-edit" (click)="selectRequest(request)">Manage Request</button>
+            </div>
+            <div *ngIf="selectedRequest && selectedRequest.id === request.id" class="inline-edit-form">
+              <h3>Update Request Status</h3>
+              <div class="form-group">
+                <label for="requestStatus">Status</label>
+                <select id="requestStatus" [(ngModel)]="selectedStatus" [disabled]="updating">
+                  <option *ngFor="let status of statuses" [ngValue]="status">{{ getStatusLabel(status) }}</option>
+                </select>
+              </div>
+              <div class="form-actions">
+                <button type="button" class="btn-save" (click)="saveStatus()" [disabled]="updating">{{ updating ? 'Saving...' : 'Save Status' }}</button>
+                <button type="button" class="btn-cancel" (click)="selectedRequest = null" [disabled]="updating">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <app-footer></app-footer>
+</div>
