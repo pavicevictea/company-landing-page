@@ -22,9 +22,17 @@ public class AdminRequestController {
     }
 
     @GetMapping
-    public List<CustomerRequestDto> getAllRequests() {
-        return inquiryRepository.findAll()
-                .stream()
+    public List<CustomerRequestDto> getAllRequests(@RequestParam(required = false) String search, @RequestParam(required = false) InquiryStatus status, @RequestParam(defaultValue = "asc") String sort) {
+        String searchTerm = (search == null || search.isBlank())
+                ? null
+                : search.trim();
+        List<ContactInquiry> inquiries = inquiryRepository.searchAndFilter(searchTerm, status);
+        if ("desc".equalsIgnoreCase(sort)) {
+            inquiries.sort((a, b) -> b.getId().compareTo(a.getId()));
+        } else {
+            inquiries.sort((a, b) -> a.getId().compareTo(b.getId()));
+        }
+        return inquiries.stream()
                 .map(CustomerRequestDto::new)
                 .toList();
     }
