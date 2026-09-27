@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export type InquiryStatus =
@@ -16,6 +16,12 @@ export interface CustomerRequest {
     status: InquiryStatus;
 }
 
+export interface RequestSearchParams {
+  search?: string;
+  status?: InquiryStatus | '';
+  sort?: 'asc' | 'desc';
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -30,10 +36,25 @@ export class ContactService {
         return this.http.post(this.apiUrl, data);
     }
 
-    getCustomerRequests(): Observable<CustomerRequest[]> {
+    getCustomerRequests(
+        filters: RequestSearchParams = {}
+    ): Observable<CustomerRequest[]> {
+        let params = new HttpParams();
+        if (filters.search && filters.search.trim()) {
+            params = params.set('search', filters.search.trim());
+        }
+        if (filters.status) {
+            params = params.set('status', filters.status);
+        }
+        if (filters.sort) {
+            params = params.set('sort', filters.sort);
+        }
         return this.http.get<CustomerRequest[]>(
-        this.adminRequestsUrl,
-        { withCredentials: true }
+            this.adminRequestsUrl,
+            {
+            params,
+            withCredentials: true
+            }
         );
     }
 
