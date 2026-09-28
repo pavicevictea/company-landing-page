@@ -17,12 +17,42 @@
         <h2>Customer Requests</h2>
         <p class="section-description">View customer inquiries and manage their status.</p>
         <div class="requests-toolbar">
-          <h3 class="admin-subheading">All Requests ({{ requests.length }})</h3>
-          <button type="button" class="btn-edit" (click)="loadRequests()" [disabled]="loading">{{ loading ? 'Loading...' : 'Refresh' }}</button>
+          <h3 class="admin-subheading">Matching Requests ({{ requests.length }})</h3>
+          <button type="button" class="btn-edit" (click)="loadRequests()" [disabled]="loading"> {{ loading ? 'Loading...' : 'Refresh' }}
+          </button>
+        </div>
+        <div class="requests-filters">
+          <div class="form-group">
+            <label for="requestSearch">Search requests</label>
+            <div class="search-row">
+              <input id="requestSearch" type="text" [value]="searchTerm" (input)="searchTerm = $any($event.target).value" (keyup.enter)="loadRequests()" placeholder="Search by name, email, subject or message..." [disabled]="loading"/>
+              <button type="button" class="btn-edit" (click)="loadRequests()" [disabled]="loading">Search</button>
+            </div>
+          </div>
+          <div class="filters-row">
+            <div class="form-group">
+              <label for="filterStatus">Filter by status</label>
+              <select id="filterStatus" [value]="filterStatus" (change)="onFilterStatusChange($event)" [disabled]="loading">
+                <option value="">All statuses</option>
+                <option *ngFor="let status of statuses" [value]="status">{{ getStatusLabel(status) }}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="sortOrder">Sort by request ID</label>
+              <select id="sortOrder" [value]="sortOrder" (change)="onSortChange($event)" [disabled]="loading">
+                <option value="desc">Newest first</option>
+                <option value="asc">Oldest first</option>
+              </select>
+            </div>
+          </div>
+          <div class="filter-actions">
+            <button type="button" class="btn-cancel" (click)="resetFilters()" [disabled]="loading">Reset filters
+            </button>
+          </div>
         </div>
         <p *ngIf="loading" class="section-description">Loading requests...</p>
         <div *ngIf="!loading">
-          <p *ngIf="requests.length === 0" class="section-description">No customer requests found.</p>
+          <p *ngIf="requests.length === 0" class="section-description">No requests match your search and filters.</p>
           <div *ngFor="let request of requests" class="content-card request-card">
             <div class="request-card-header">
               <div class="request-title">
@@ -36,14 +66,14 @@
             <h4 class="request-message-heading">Message</h4>
             <p class="request-message">{{ request.message }}</p>
             <div *ngIf="(!selectedRequest || selectedRequest.id !== request.id) && request.status !== 'RESOLVED'" class="action-buttons">
-                <button type="button" class="btn-edit" (click)="selectRequest(request)">Manage Request</button>
+              <button type="button" class="btn-edit" (click)="selectRequest(request)">Manage Request</button>
             </div>
             <div *ngIf="selectedRequest && selectedRequest.id === request.id" class="inline-edit-form">
               <h3>Update Request Status</h3>
               <div class="form-group">
                 <label for="requestStatus">Status</label>
-                <select id="requestStatus" [(ngModel)]="selectedStatus" [disabled]="updating">
-                  <option *ngFor="let status of statuses" [ngValue]="status">{{ getStatusLabel(status) }}</option>
+                <select id="requestStatus" [value]="selectedStatus" (change)="selectedStatus = $any($event.target).value" [disabled]="updating">
+                  <option *ngFor="let status of statuses" [value]="status">{{ getStatusLabel(status) }}</option>
                 </select>
               </div>
               <div class="form-actions">

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ContactService, CustomerRequest, InquiryStatus } from '../../services/contact.service';
+import { ContactService, CustomerRequest, InquiryStatus, RequestSearchParams } from '../../services/contact.service';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -27,6 +27,10 @@ export class CustomerRequestsComponent implements OnInit {
 
   selectedStatus: InquiryStatus = 'PENDING';
 
+  searchTerm = '';
+  filterStatus: InquiryStatus | '' = '';
+  sortOrder: 'asc' | 'desc' = 'desc';
+
   constructor(
     private contactService: ContactService,
     private authService: AuthService,
@@ -37,20 +41,20 @@ export class CustomerRequestsComponent implements OnInit {
     this.loadRequests();
   }
 
+  
   loadRequests(): void {
     this.loading = true;
     this.errorMessage = '';
     this.successMessage = '';
-    this.contactService.getCustomerRequests().subscribe({
+    
+    const filters: RequestSearchParams = {
+      search: this.searchTerm,
+      status: this.filterStatus,
+      sort: this.sortOrder
+    };
+    this.contactService.getCustomerRequests(filters).subscribe({
       next: (requests) => {
-        this.requests = requests.sort((a, b) => {
-          const priority: { [key in InquiryStatus]: number } = {
-            PENDING: 1,
-            IN_PROGRESS: 2,
-            RESOLVED: 3
-          };
-          return priority[a.status] - priority[b.status];
-        });
+        this.requests = requests;
         this.loading = false;
         if (this.selectedRequest) {
           const selectedId = this.selectedRequest.id;
@@ -139,5 +143,27 @@ export class CustomerRequestsComponent implements OnInit {
         });
       });
     });
+  }
+
+  onSearchChange(): void {
+    this.loadRequests();
+  }
+
+  onFilterStatusChange(event: Event): void {
+    this.filterStatus = (event.target as HTMLSelectElement).value as InquiryStatus | '';
+    this.loadRequests();
+  }
+
+  onSortChange(event: Event): void {
+    this.sortOrder = (event.target as HTMLSelectElement).value as 'asc' | 'desc';
+    this.loadRequests();
+  }
+
+  resetFilters(): void {
+    this.searchTerm = '';
+    this.filterStatus = '';
+    this.sortOrder = 'desc';
+    this.selectedRequest = null;
+    this.loadRequests();
   }
 }
