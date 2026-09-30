@@ -88,4 +88,16 @@ export class AuthService {
             }
         );
     }
+
+    isAdmin(): boolean {
+       return this.currentUser && this.currentUser.role === 'ADMIN';
+    }
+
+    isEmployee(): boolean {
+        return this.currentUser && this.currentUser.role === 'EMPLOYEE';
+    }
+
+    isUser(): boolean {
+        return this.currentUser && this.currentUser.role === 'USER';
+    }
 }
