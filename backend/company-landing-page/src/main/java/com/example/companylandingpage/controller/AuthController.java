@@ -69,7 +69,7 @@ public class AuthController {
         return new AuthUserDto(
                 user.getName(),
                 user.getUsername(),
-                "USER"
+                user.getRole()
         );
     }
 
