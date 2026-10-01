@@ -33,7 +33,7 @@ export class CustomerRequestsComponent implements OnInit {
 
   constructor(
     private contactService: ContactService,
-    private authService: AuthService,
+    public authService: AuthService,
     private router: Router
   ) {}
 
