@@ -20,10 +20,16 @@ public interface ContactInquiryRepository extends JpaRepository<ContactInquiry, 
                     LOWER(c.message) LIKE LOWER(CONCAT('%', :search, '%'))
                 )
                 AND (:status IS NULL OR c.status = :status)
+                AND (
+                    :attachments = 'all'
+                    OR (:attachments = 'with' AND SIZE(c.documents) > 0)
+                    OR (:attachments = 'without' AND SIZE(c.documents) = 0)
+                )
             """)
     List<ContactInquiry> searchAndFilter(
             @Param("search") String search,
-            @Param("status") InquiryStatus status
+            @Param("status") InquiryStatus status,
+            @Param("attachments") String attachments
     );
 
     List<ContactInquiry> findByUserUsernameOrderByIdDesc(String username);

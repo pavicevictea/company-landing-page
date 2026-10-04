@@ -22,11 +22,11 @@ public class AdminRequestController {
     }
 
     @GetMapping
-    public List<CustomerRequestDto> getAllRequests(@RequestParam(required = false) String search, @RequestParam(required = false) InquiryStatus status, @RequestParam(defaultValue = "asc") String sort) {
+    public List<CustomerRequestDto> getAllRequests(@RequestParam(required = false) String search, @RequestParam(required = false) InquiryStatus status, @RequestParam(required = false, defaultValue = "all") String attachments, @RequestParam(defaultValue = "asc") String sort) {
         String searchTerm = (search == null || search.isBlank())
                 ? null
                 : search.trim();
-        List<ContactInquiry> inquiries = inquiryRepository.searchAndFilter(searchTerm, status);
+        List<ContactInquiry> inquiries = inquiryRepository.searchAndFilter(searchTerm, status, attachments);
         if ("desc".equalsIgnoreCase(sort)) {
             inquiries.sort((a, b) -> b.getId().compareTo(a.getId()));
         } else {
