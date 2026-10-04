@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ContactInquiryRepository extends JpaRepository<ContactInquiry, Long> {
     @Query("""
@@ -24,4 +25,7 @@ public interface ContactInquiryRepository extends JpaRepository<ContactInquiry, 
             @Param("search") String search,
             @Param("status") InquiryStatus status
     );
+
+    List<ContactInquiry> findByUserUsernameOrderByIdDesc(String username);
+    Optional<ContactInquiry> findByIdAndUserUsername(Long id, String username);
 }

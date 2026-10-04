@@ -28,18 +28,18 @@ public class Document {
     private LocalDateTime uploadedAt;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "inquiry_id", nullable = false)
+    private ContactInquiry inquiry;
 
     public Document() {}
 
-    public Document(String originalFilename, String storedFilename, String contentType, long size, LocalDateTime uploadedAt, User user) {
+    public Document(String originalFilename, String storedFilename, String contentType, long size, LocalDateTime uploadedAt, ContactInquiry inquiry) {
         this.originalFilename = originalFilename;
         this.storedFilename = storedFilename;
         this.contentType = contentType;
         this.size = size;
         this.uploadedAt = uploadedAt;
-        this.user = user;
+        this.inquiry = inquiry;
     }
 
     public Long getId() {
@@ -66,7 +66,11 @@ public class Document {
         return uploadedAt;
     }
 
-    public User getUser() {
-        return user;
+    public ContactInquiry getInquiry() {
+        return inquiry;
+    }
+
+    public void setInquiry(ContactInquiry inquiry) {
+        this.inquiry = inquiry;
     }
 }

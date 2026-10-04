@@ -1,6 +1,10 @@
 package com.example.companylandingpage.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "contact_inquiries")
@@ -23,13 +27,23 @@ public class ContactInquiry {
     @Column(nullable = false)
     private InquiryStatus status = InquiryStatus.PENDING;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
+
+    @OneToMany(mappedBy = "inquiry", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Document> documents = new ArrayList<>();
+
     public ContactInquiry() {}
 
-    public ContactInquiry(String name, String email, String subject, String message){
+    public ContactInquiry(String name, String email, String subject, String message, User user){
         this.name = name;
         this.email = email;
         this.subject = subject;
         this.message = message;
+        this.user = user;
     }
 
     public Long getId() {
@@ -74,5 +88,21 @@ public class ContactInquiry {
 
     public void setStatus(InquiryStatus status) {
         this.status = status;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Document> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(List<Document> documents) {
+        this.documents = documents;
     }
 }

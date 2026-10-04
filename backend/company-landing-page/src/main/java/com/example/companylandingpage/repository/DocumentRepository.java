@@ -7,7 +7,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DocumentRepository extends JpaRepository<Document, Long> {
-    List<Document> findByUserUsernameOrderByUploadedAtDesc(String username);
-    Optional<Document> findByIdAndUserUsername(Long id, String username);
-
+    Optional<Document> findByIdAndInquiryUserUsername(Long id, String username);
 }
