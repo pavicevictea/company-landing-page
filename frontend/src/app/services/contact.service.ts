@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { DocumentDto } from './document.service';
 
 export type InquiryStatus =
   | 'PENDING'
@@ -22,6 +23,16 @@ export interface RequestSearchParams {
   sort?: 'asc' | 'desc';
 }
 
+export interface UserInquiry {
+  id: number;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  status: InquiryStatus;
+  documents: DocumentDto[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -32,8 +43,30 @@ export class ContactService {
 
     constructor(private http: HttpClient) {}
 
-    submitInquiry(data: any): Observable<any> {
-        return this.http.post(this.apiUrl, data);
+    submitInquiry(
+        data: {
+        name: string;
+        email: string;
+        subject: string;
+        message: string;
+        },
+        file?: File
+    ): Observable<any> {
+        const formData = new FormData();
+        formData.append('name', data.name);
+        formData.append('email', data.email);
+        formData.append('subject', data.subject);
+        formData.append('message', data.message);
+        if (file) {
+            formData.append('file', file);
+        }
+        return this.http.post(
+            this.apiUrl,
+            formData,
+            {
+                withCredentials: true
+            }
+        );
     }
 
     getCustomerRequests(
@@ -73,6 +106,15 @@ export class ContactService {
         `${this.adminRequestsUrl}/${id}/status`,
         { status },
         { withCredentials: true }
+        );
+    }
+
+    getMyInquiries(): Observable<UserInquiry[]> {
+        return this.http.get<UserInquiry[]>(
+            `${this.apiUrl}/my`,
+            {
+                withCredentials: true
+            }
         );
     }
 }
