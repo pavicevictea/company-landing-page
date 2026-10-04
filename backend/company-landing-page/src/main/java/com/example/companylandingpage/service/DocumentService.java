@@ -125,4 +125,23 @@ public class DocumentService {
         }
         documentRepository.delete(document);
     }
+
+    public Document getDocumentForStaff(Long id) {
+        return documentRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Document not found"));
+    }
+
+    public Resource downloadFileForStaff(Long id) {
+        Document document = getDocumentForStaff(id);
+        Path filePath = uploadDirectory.resolve(document.getStoredFilename()).normalize();
+
+        try {
+            Resource resource = new UrlResource(filePath.toUri());
+            if (!resource.exists() || !resource.isReadable()) {
+                throw new IllegalArgumentException("File not found");
+            }
+            return resource;
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Could not read file", e);
+        }
+    }
 }

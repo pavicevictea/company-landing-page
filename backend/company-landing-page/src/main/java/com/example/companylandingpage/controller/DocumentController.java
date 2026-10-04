@@ -26,9 +26,20 @@ public class DocumentController {
 
     @GetMapping("/{id}/download")
     public ResponseEntity<Resource> downloadDocument(@PathVariable Long id, Authentication authentication) {
-        String username = authentication.getName();
-        Document document = documentService.getDocument(id, username);
-        Resource resource = documentService.downloadFile(id, username);
+        boolean isStaff = authentication.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN") || authority.getAuthority().equals("ROLE_EMPLOYEE"));
+
+        Document document;
+        Resource resource;
+
+        if (isStaff) {
+            document = documentService.getDocumentForStaff(id);
+            resource = documentService.downloadFileForStaff(id);
+        } else {
+            String username = authentication.getName();
+            document = documentService.getDocument(id, username);
+            resource = documentService.downloadFile(id, username);
+        }
+
         MediaType mediaType;
 
         try {
