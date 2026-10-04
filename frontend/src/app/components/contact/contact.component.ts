@@ -1,5 +1,6 @@
 import { ContactService } from './../../services/contact.service';
 import { Component, OnInit } from '@angular/core';
+import { UserProfile, UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-contact',
@@ -16,9 +17,32 @@ export class ContactComponent implements OnInit {
   submitted = false;
   errorMessage = '';
 
-  constructor(private ContactService: ContactService) { }
+  selectedFile: File | null = null;
+  isLoggedIn = false;
+  currentUser: UserProfile | null = null;
+
+  constructor(
+    private ContactService: ContactService,
+    private userService: UserService
+  ) { }
 
   ngOnInit() {
+    this.loadCurrentUser();
+  }
+
+  loadCurrentUser(): void {
+    this.userService.getCurrentUser().subscribe(
+      user => {
+        this.currentUser = user;
+        this.isLoggedIn = true;
+        this.name = user.name;
+        this.email = user.email;
+      },
+      () => {
+        this.currentUser = null;
+        this.isLoggedIn = false;
+      }
+    );
   }
 
   onNameInput(event: any) {
@@ -51,22 +75,46 @@ export class ContactComponent implements OnInit {
       subject: this.subject,
       message: this.message
     };
-    
-    this.ContactService.submitInquiry(inquiry).subscribe(
+  
+    this.ContactService.submitInquiry(
+      inquiry,
+      this.selectedFile || undefined
+    ).subscribe(
       () => {
         this.submitted = true;
         this.errorMessage = '';
-
         this.name = '';
         this.email = '';
         this.subject = '';
         this.message = '';
+        this.selectedFile = null;
+
+        if (!this.isLoggedIn) {
+          this.name = '';
+          this.email = '';
+        }
+
+        const fileInput = document.getElementById(
+          'file'
+        ) as HTMLInputElement | null;
+        if (fileInput) {
+          fileInput.value = '';
+        }
       },
-      () => {
+      (error) => {
         this.submitted = false;
-        this.errorMessage = 'Something went wrong. Please try again later.';
+        this.errorMessage = (error.error && error.error.error) || 'Something went wrong. Please try again later.';
       }
     );
+  }
+
+  onFileSelected(event: any) {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      this.selectedFile = files[0];
+    } else {
+      this.selectedFile = null;
+    }
   }
 
 }

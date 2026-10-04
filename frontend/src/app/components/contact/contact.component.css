@@ -119,3 +119,25 @@
   font-size: 14px;
   line-height: 1.5;
 }
+
+.field-note {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.login-note {
+  margin: 0;
+  color: #9ca3af;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.login-note a {
+  color: #f3f4f6;
+  text-decoration: underline;
+}
+
+.login-note a:hover {
+  color: #ffffff;
+}
