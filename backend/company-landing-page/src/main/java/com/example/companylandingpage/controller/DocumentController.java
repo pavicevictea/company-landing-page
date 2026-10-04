@@ -24,16 +24,6 @@ public class DocumentController {
         this.documentService = documentService;
     }
 
-    @PostMapping
-    public ResponseEntity<DocumentDto> uploadDocument(@RequestParam("file")MultipartFile file, Authentication authentication) {
-        return ResponseEntity.ok(documentService.uploadFile(file, authentication.getName()));
-    }
-
-    @GetMapping
-    public ResponseEntity<List<DocumentDto>> getDocuments(Authentication authentication) {
-        return ResponseEntity.ok(documentService.getUserDocuments(authentication.getName()));
-    }
-
     @GetMapping("/{id}/download")
     public ResponseEntity<Resource> downloadDocument(@PathVariable Long id, Authentication authentication) {
         String username = authentication.getName();

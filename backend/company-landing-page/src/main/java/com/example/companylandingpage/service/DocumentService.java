@@ -3,9 +3,7 @@ package com.example.companylandingpage.service;
 import com.example.companylandingpage.dto.DocumentDto;
 import com.example.companylandingpage.model.ContactInquiry;
 import com.example.companylandingpage.model.Document;
-import com.example.companylandingpage.model.User;
 import com.example.companylandingpage.repository.DocumentRepository;
-import com.example.companylandingpage.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -31,12 +29,10 @@ public class DocumentService {
     private static final Set<String> ALLOWED_TYPES = Set.of("application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "image/png", "image/jpeg");
 
     private final DocumentRepository documentRepository;
-    private final UserRepository userRepository;
     private final Path uploadDirectory;
 
-    public DocumentService(DocumentRepository documentRepository, UserRepository userRepository, @Value("${file.upload-dir:uploads}") String uploadDir) {
+    public DocumentService(DocumentRepository documentRepository, @Value("${file.upload-dir:uploads}") String uploadDir) {
         this.documentRepository = documentRepository;
-        this.userRepository = userRepository;
         this.uploadDirectory = Paths.get(uploadDir).toAbsolutePath().normalize();
         try{
             Files.createDirectories(uploadDirectory);
@@ -99,16 +95,8 @@ public class DocumentService {
         return new DocumentDto(documentRepository.save(document));
     }
 
-    public List<DocumentDto> getUserDocuments(String username) {
-        return documentRepository
-                .findByUserUsernameOrderByUploadedAtDesc(username)
-                .stream()
-                .map(DocumentDto::new)
-                .toList();
-    }
-
     public Document getDocument(Long id, String username) {
-        return documentRepository.findByIdAndUserUsername(id, username).orElseThrow(() -> new IllegalArgumentException("Document not found"));
+        return documentRepository.findByIdAndInquiryUserUsername(id, username).orElseThrow(() -> new IllegalArgumentException("Document not found"));
     }
 
     public Resource downloadFile(Long id, String username) {
