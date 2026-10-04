@@ -3,6 +3,8 @@ package com.example.companylandingpage.dto;
 import com.example.companylandingpage.model.ContactInquiry;
 import com.example.companylandingpage.model.InquiryStatus;
 
+import java.util.List;
+
 public class CustomerRequestDto {
 
     private Long id;
@@ -17,6 +19,8 @@ public class CustomerRequestDto {
 
     private InquiryStatus status;
 
+    private List<DocumentDto> documents;
+
     public CustomerRequestDto() {}
 
     public CustomerRequestDto(ContactInquiry inquiry) {
@@ -26,6 +30,7 @@ public class CustomerRequestDto {
         this.subject = inquiry.getSubject();
         this.message = inquiry.getMessage();
         this.status = inquiry.getStatus();
+        this.documents = inquiry.getDocuments().stream().map(DocumentDto::new).toList();
     }
 
     public Long getId() {
@@ -50,5 +55,9 @@ public class CustomerRequestDto {
 
     public InquiryStatus getStatus() {
         return status;
+    }
+
+    public List<DocumentDto> getDocuments() {
+        return documents;
     }
 }
