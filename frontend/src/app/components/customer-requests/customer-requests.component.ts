@@ -31,6 +31,7 @@ export class CustomerRequestsComponent implements OnInit {
   searchTerm = '';
   filterStatus: InquiryStatus | '' = '';
   sortOrder: 'asc' | 'desc' = 'desc';
+  attachmentFilter: 'all' | 'with' | 'without' = 'all';
 
   constructor(
     private contactService: ContactService,
@@ -52,7 +53,8 @@ export class CustomerRequestsComponent implements OnInit {
     const filters: RequestSearchParams = {
       search: this.searchTerm,
       status: this.filterStatus,
-      sort: this.sortOrder
+      sort: this.sortOrder,
+      attachments: this.attachmentFilter
     };
     this.contactService.getCustomerRequests(filters).subscribe({
       next: (requests) => {
@@ -161,10 +163,16 @@ export class CustomerRequestsComponent implements OnInit {
     this.loadRequests();
   }
 
+  onAttachmentFilterChange(event: Event): void {
+    this.attachmentFilter = (event.target as HTMLSelectElement).value as 'all' | 'with' | 'without';
+    this.loadRequests();
+  }
+
   resetFilters(): void {
     this.searchTerm = '';
     this.filterStatus = '';
     this.sortOrder = 'desc';
+    this.attachmentFilter = 'all';
     this.selectedRequest = null;
     this.loadRequests();
   }
@@ -184,5 +192,5 @@ export class CustomerRequestsComponent implements OnInit {
       }
     );
   }
-  
+
 }

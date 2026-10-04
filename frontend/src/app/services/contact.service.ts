@@ -22,6 +22,7 @@ export interface RequestSearchParams {
   search?: string;
   status?: InquiryStatus | '';
   sort?: 'asc' | 'desc';
+  attachments?: 'all' | 'with' | 'without';
 }
 
 export interface UserInquiry {
@@ -83,11 +84,14 @@ export class ContactService {
         if (filters.sort) {
             params = params.set('sort', filters.sort);
         }
+        if (filters.attachments) {
+            params = params.set('attachments', filters.attachments);
+        }
         return this.http.get<CustomerRequest[]>(
             this.adminRequestsUrl,
             {
-            params,
-            withCredentials: true
+                params,
+                withCredentials: true
             }
         );
     }
