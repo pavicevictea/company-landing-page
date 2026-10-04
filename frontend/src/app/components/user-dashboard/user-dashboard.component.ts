@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { UserProfile, UserService } from 'src/app/services/user.service';
-import { DocumentDto, DocumentService } from 'src/app/services/document.service';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -29,20 +28,12 @@ export class UserDashboardComponent implements OnInit {
   newPasswordError = '';
   confirmNewPasswordError = '';
 
-  documents: DocumentDto[] = [];
-  selectedFile: File | null = null;
-  isUploading = false;
-  documentErrorMessage = '';
-  documentSuccessMessage = '';
-
   constructor(
-    private userService: UserService,
-    private documentService: DocumentService
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
     this.loadUser();
-    this.loadDocuments();
   }
 
   loadUser(): void {
@@ -59,18 +50,6 @@ export class UserDashboardComponent implements OnInit {
         this.isLoading = false;
       }
     );
-  }
-
-  loadDocuments(): void {
-    this.documentErrorMessage = '';
-    this.documentService.getDocuments().subscribe(
-      documents => {
-        this.documents = documents;
-      },
-      () => {
-        this.documentErrorMessage = 'Unable to load your documents.';
-      }
-    )
   }
 
   startEditing(): void {
@@ -296,88 +275,4 @@ export class UserDashboardComponent implements OnInit {
     );
   }
 
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if(!input.files || input.files.length === 0) {
-      this.selectedFile = null;
-      return;
-    }
-
-    this.selectedFile = input.files[0];
-    this.documentErrorMessage = '';
-    this.documentSuccessMessage = '';
-  }
-
-  uploadDocument(): void  {
-    if(!this.selectedFile) {
-      this.documentErrorMessage = 'Please select a file.';
-      return;
-    }
-
-    this.documentErrorMessage = '';
-    this.documentSuccessMessage = '';
-    this.isUploading = true;
-
-    this.documentService.uploadDocument(this.selectedFile).subscribe(
-      uploadedDocument => {
-        this.documents.unshift(uploadedDocument);
-        this.selectedFile = null;
-        this.isUploading = false;
-        this.documentSuccessMessage = 'Document uploaded successfully.';
-
-        const fileInput = document.getElementById('documentFile') as HTMLInputElement;
-
-        if (fileInput) {
-          fileInput.value = '';
-        }
-      },
-      error => {
-        this.isUploading = false;
-        if (error.status === 400) {
-          this.documentErrorMessage = error.error && error.error.error ? error.error.error : 'The selected file is not valid.';
-        } else {
-          this.documentErrorMessage = 'Unable to upload the document. Please try again.';
-        }
-      }
-    );
-  }
-
-  downloadDocument(documentDto: DocumentDto): void {
-    this.documentService.downloadDocument(documentDto.id).subscribe(
-      blob => {
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = documentDto.originalFilename;
-        link.click();
-        window.URL.revokeObjectURL(url);
-      },
-      () => {
-        this.documentErrorMessage = 'Unable to download the document.';
-      }
-    );
-  }
-
-  deleteDocument(document: DocumentDto): void {
-    this.documentService.deleteDocument(document.id).subscribe(
-      () => {
-        this.documents = this.documents.filter(item => item.id !== document.id);
-        this.documentSuccessMessage = 'Document deleted successfully.';
-        this.documentErrorMessage = '';
-      },
-      () => {
-        this.documentErrorMessage = 'Unable to delete the document.';
-      }
-    );
-  }
-
-  formatFileSize(size: number): string {
-    if (size < 1024) {
-      return `${size} B`;
-    }
-    if (size < 1024 * 1024) {
-      return `${(size / 1024).toFixed(1)} KB`;
-    }
-    return `${(size / (1024 * 1024)).toFixed(1)} MB`;
-  }
 }
