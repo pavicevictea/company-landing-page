@@ -15,6 +15,7 @@ export interface CustomerRequest {
     subject: string;
     message: string;
     status: InquiryStatus;
+    documents: DocumentDto[];
 }
 
 export interface RequestSearchParams {

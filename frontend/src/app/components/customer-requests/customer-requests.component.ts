@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContactService, CustomerRequest, InquiryStatus, RequestSearchParams } from '../../services/contact.service';
 import { AuthService } from '../../services/auth.service';
+import { DocumentDto, DocumentService } from 'src/app/services/document.service';
 
 @Component({
   selector: 'app-customer-requests',
@@ -34,7 +35,8 @@ export class CustomerRequestsComponent implements OnInit {
   constructor(
     private contactService: ContactService,
     public authService: AuthService,
-    private router: Router
+    private router: Router,
+    private documentService: DocumentService
   ) {}
 
   ngOnInit(): void {
@@ -166,4 +168,21 @@ export class CustomerRequestsComponent implements OnInit {
     this.selectedRequest = null;
     this.loadRequests();
   }
+
+  downloadDocument(file: DocumentDto): void {
+    this.documentService.downloadDocument(file.id).subscribe(
+      blob => {
+        const url = window.URL.createObjectURL(blob);
+        const link = window.document.createElement('a');
+        link.href = url;
+        link.download = file.originalFilename;
+        link.click();
+        window.URL.revokeObjectURL(url);
+      },
+      () => {
+        this.errorMessage = 'Unable to download the document.'
+      }
+    );
+  }
+  
 }

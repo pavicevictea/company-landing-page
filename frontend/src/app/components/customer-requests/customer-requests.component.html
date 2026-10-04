@@ -65,6 +65,16 @@
             <p><strong>Email:</strong>{{ request.email }}</p>
             <h4 class="request-message-heading">Message</h4>
             <p class="request-message">{{ request.message }}</p>
+            <div *ngIf="request.documents && request.documents.length > 0" class="request-documents">
+              <h4>Attachments</h4>
+              <div *ngFor="let document of request.documents" class="document-item">
+                <div class="document-info">
+                  <strong>{{ document.originalFilename }}</strong>
+                  <span>{{ document.size / 1024 | number:'1.0-2' }} KB · {{ document.uploadedAt | date:'medium' }}</span>
+                </div>
+                <button type="button" class="btn-edit" (click)="downloadDocument(document)">Download</button>
+              </div>
+            </div>
             <div *ngIf="(!selectedRequest || selectedRequest.id !== request.id) && request.status !== 'RESOLVED'" class="action-buttons">
               <button type="button" class="btn-edit" (click)="selectRequest(request)">Manage Request</button>
             </div>
