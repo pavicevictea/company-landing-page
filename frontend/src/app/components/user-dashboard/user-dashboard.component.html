@@ -76,5 +76,48 @@
         </form>
       </ng-container>
     </div>
+    <div *ngIf="!isLoading && user" class="inquiries-section">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">Contact</p>
+          <h2>My Inquiries</h2>
+          <p class="subtitle">View the messages you have sent and the documents attached to them.</p>
+        </div>
+      </div>
+      <div *ngIf="inquiries.length === 0" class="empty-message">You have not sent any inquiries yet.</div>
+      <div *ngFor="let inquiry of inquiries" class="inquiry-card">
+        <div class="inquiry-header">
+          <div>
+            <h3>{{ inquiry.subject }}</h3>
+            <p>{{ inquiry.email }}</p>
+          </div>
+          <span class="status-badge" [class.status-pending]="inquiry.status === 'PENDING'" [class.status-progress]="inquiry.status === 'IN_PROGRESS'" [class.status-resolved]="inquiry.status === 'RESOLVED'">{{ inquiry.status }}</span>
+        </div>
+        <div class="inquiry-details">
+          <div class="inquiry-field">
+            <span>Name</span>
+            <p>{{ inquiry.name }}</p>
+          </div>
+          <div class="inquiry-field">
+            <span>Message</span>
+            <p>{{ inquiry.message }}</p>
+          </div>
+        </div>
+        <div *ngIf="inquiry.documents.length > 0" class="documents-section">
+          <h4>Attachments</h4>
+          <div *ngFor="let document of inquiry.documents" class="document-item">
+            <div class="document-info">
+              <strong>{{ document.originalFilename }}</strong>
+              <span>{{ document.size / 1024 | number:'1.0-2' }} KB · {{ document.uploadedAt | date:'medium' }}</span>
+            </div>
+            <div class="document-actions">
+              <button type="button" class="document-button" (click)="downloadDocument(document)">Download
+              </button>
+              <button type="button" class="document-delete-button" (click)="deleteDocument(document.id)">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>

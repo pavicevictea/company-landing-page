@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserProfile, UserService } from 'src/app/services/user.service';
+import { ContactService, UserInquiry } from 'src/app/services/contact.service';
+import { DocumentDto, DocumentService } from 'src/app/services/document.service';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -9,6 +11,7 @@ import { UserProfile, UserService } from 'src/app/services/user.service';
 export class UserDashboardComponent implements OnInit {
 
   user: UserProfile | null = null;
+  inquiries: UserInquiry[] = [];
 
   isEditing = false;
   isLoading = true;
@@ -29,25 +32,48 @@ export class UserDashboardComponent implements OnInit {
   confirmNewPasswordError = '';
 
   constructor(
-    private userService: UserService
+    private userService: UserService,
+    private contactService: ContactService,
+    private documentService: DocumentService
   ) { }
 
   ngOnInit(): void {
-    this.loadUser();
+    this.loadDashboard();
   }
 
-  loadUser(): void {
+  loadDashboard(): void {
     this.isLoading = true;
     this.errorMessage = '';
 
     this.userService.getCurrentUser().subscribe(
       user => {
         this.user = user;
-        this.isLoading = false;
+
+        this.contactService.getMyInquiries().subscribe(
+          inquiries => {
+            this.inquiries = inquiries;
+            this.isLoading = false;
+          },
+          () => {
+            this.errorMessage = 'Unable to load your inquiries.';
+            this.isLoading = false;
+          }
+        );
       },
       () => {
         this.errorMessage = 'Unable to load your account information.';
         this.isLoading = false;
+      }
+    );
+  }
+
+  loadUser(): void {
+    this.userService.getCurrentUser().subscribe(
+      user => {
+        this.user = user;
+      },
+      () => {
+        this.errorMessage = 'Unable to load your account information.';
       }
     );
   }
@@ -272,6 +298,33 @@ export class UserDashboardComponent implements OnInit {
       !this.currentPasswordError &&
       !this.newPasswordError &&
       !this.confirmNewPasswordError
+    );
+  }
+
+  downloadDocument(file: DocumentDto): void {
+    this.documentService.downloadDocument(file.id).subscribe(
+      blob => {
+        const url = window.URL.createObjectURL(blob);
+        const link = window.document.createElement('a');
+        link.href = url;
+        link.download = file.originalFilename;
+        link.click();
+        window.URL.revokeObjectURL(url);
+      },
+      () => {
+        this.errorMessage = 'Unable to download the document.';
+      }
+    );
+  }
+
+  deleteDocument(id: number): void {
+    this.documentService.deleteDocument(id).subscribe(
+      () => {
+        this.loadDashboard();
+      },
+      () => {
+        this.errorMessage = 'Unable to delete the document.';
+      }
     );
   }
 
