@@ -31,7 +31,7 @@
         </div>
         <p *ngIf="!isLoggedIn" class="login-note">To upload a file, please <a routerLink="/register">register</a> or <a routerLink="/login">log in</a> to your account.</p>
       </div>
-      <button type="submit" [disabled]="!isFormValid">Send Message</button>
+      <button type="submit" [disabled]="!isFormValid || isSubmitting">Send Message</button>
       <p *ngIf="submitted" class="success-message">Your message has been sent successfully.</p>
       <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
     </form>

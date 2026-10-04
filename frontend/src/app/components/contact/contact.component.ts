@@ -20,6 +20,7 @@ export class ContactComponent implements OnInit {
   selectedFile: File | null = null;
   isLoggedIn = false;
   currentUser: UserProfile | null = null;
+  isSubmitting = false;
 
   constructor(
     private ContactService: ContactService,
@@ -67,7 +68,9 @@ export class ContactComponent implements OnInit {
 
   showMessage(event: Event) {
     event.preventDefault();
-    if (!this.isFormValid) return;
+    if (!this.isFormValid || this.isSubmitting) return;
+
+    this.isSubmitting = true;
 
     const inquiry = {
       name: this.name,
@@ -81,6 +84,7 @@ export class ContactComponent implements OnInit {
       this.selectedFile || undefined
     ).subscribe(
       () => {
+        this.isSubmitting = false;
         this.submitted = true;
         this.errorMessage = '';
         this.name = '';
@@ -102,6 +106,7 @@ export class ContactComponent implements OnInit {
         }
       },
       (error) => {
+        this.isSubmitting = false;
         this.submitted = false;
         this.errorMessage = (error.error && error.error.error) || 'Something went wrong. Please try again later.';
       }
