@@ -25,11 +25,18 @@ public class ContactController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ContactInquiry createInquiry(@Valid @RequestBody ContactRequest request, @RequestPart(value = "file", required = false) MultipartFile file, Authentication authentication){
+    public ContactInquiry createInquiry(@RequestParam String name, @RequestParam String email, @RequestParam String subject, @RequestParam String message, @RequestPart(value = "file", required = false) MultipartFile file, Authentication authentication) {
         String username = null;
-        if (authentication != null && authentication.isAuthenticated()) {
+        if (authentication != null &&
+                authentication.isAuthenticated()) {
             username = authentication.getName();
         }
+        ContactRequest request = new ContactRequest();
+        request.setName(name);
+        request.setEmail(email);
+        request.setSubject(subject);
+        request.setMessage(message);
+
         return contactService.createInquiry(request, username, file);
     }
 
