@@ -1,6 +1,7 @@
 package com.example.companylandingpage.service;
 
 import com.example.companylandingpage.dto.DocumentDto;
+import com.example.companylandingpage.model.ContactInquiry;
 import com.example.companylandingpage.model.Document;
 import com.example.companylandingpage.model.User;
 import com.example.companylandingpage.repository.DocumentRepository;
@@ -67,10 +68,8 @@ public class DocumentService {
         return filename.substring(lastDot).toLowerCase();
     }
 
-    public DocumentDto uploadFile(MultipartFile file, String username) {
+    public DocumentDto uploadFile(MultipartFile file, ContactInquiry inquiry) {
         validateFile(file);
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("User not found"));
-
         String originalFilename = file.getOriginalFilename();
 
         if (originalFilename == null || originalFilename.isBlank()) {
@@ -95,7 +94,7 @@ public class DocumentService {
                 file.getContentType(),
                 file.getSize(),
                 LocalDateTime.now(),
-                user
+                inquiry
         );
         return new DocumentDto(documentRepository.save(document));
     }
