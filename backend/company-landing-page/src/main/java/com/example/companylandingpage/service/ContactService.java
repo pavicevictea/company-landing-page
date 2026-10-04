@@ -1,5 +1,6 @@
 package com.example.companylandingpage.service;
 
+import com.example.companylandingpage.dto.ContactInquiryDto;
 import com.example.companylandingpage.dto.ContactRequest;
 import com.example.companylandingpage.model.ContactInquiry;
 import com.example.companylandingpage.model.User;
@@ -7,6 +8,8 @@ import com.example.companylandingpage.repository.ContactInquiryRepository;
 import com.example.companylandingpage.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Service
 public class ContactService {
@@ -45,4 +48,10 @@ public class ContactService {
         return savedInquiry;
     }
 
+    public List<ContactInquiryDto> getUserInquiries(String username) {
+        return repository.findByUserUsernameOrderByIdDesc(username)
+                .stream()
+                .map(ContactInquiryDto::new)
+                .toList();
+    }
 }

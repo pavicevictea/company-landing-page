@@ -1,5 +1,6 @@
 package com.example.companylandingpage.controller;
 
+import com.example.companylandingpage.dto.ContactInquiryDto;
 import com.example.companylandingpage.dto.ContactRequest;
 import com.example.companylandingpage.model.ContactInquiry;
 import com.example.companylandingpage.service.ContactService;
@@ -9,9 +10,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/contact")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class ContactController {
 
     private final ContactService contactService;
@@ -28,5 +31,12 @@ public class ContactController {
             username = authentication.getName();
         }
         return contactService.createInquiry(request, username, file);
+    }
+
+    @GetMapping("/my")
+    public List<ContactInquiryDto> getMyInquiries(Authentication authentication) {
+        return contactService.getUserInquiries(
+                authentication.getName()
+        );
     }
 }

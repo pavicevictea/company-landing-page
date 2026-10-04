@@ -87,6 +87,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/contact").permitAll()
                         .requestMatchers("/api/content/**").hasRole("ADMIN")
                         .requestMatchers("/api/documents/**").hasRole("USER")
+                        .requestMatchers("/api/contact/my").hasRole("USER")
                         .anyRequest().permitAll()
                 )
                 .headers(headers ->
