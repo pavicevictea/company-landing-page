@@ -29,7 +29,7 @@ public class AuthService {
                 request.getUsername(),
                 request.getEmail(),
                 passwordEncoder.encode(request.getPassword()),
-                "CLIENT"
+                "USER"
         );
         userRepository.save(user);
     }
