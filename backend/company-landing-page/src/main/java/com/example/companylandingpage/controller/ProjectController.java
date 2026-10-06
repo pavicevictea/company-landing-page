@@ -33,20 +33,29 @@ public class ProjectController {
         return projectService.getProject(id, authentication.getName(), getRole(authentication));
     }
 
+    private void checkAdmin(Authentication authentication) {
+        if (!authentication.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
+            throw new org.springframework.security.access.AccessDeniedException("Only administrators can perform this action");
+        }
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProjectDto createProject(@Valid @RequestBody ProjectCreateRequest request) {
+    public ProjectDto createProject(@Valid @RequestBody ProjectCreateRequest request, Authentication authentication) {
+        checkAdmin(authentication);
         return projectService.createProject(request);
     }
 
     @PutMapping("/{id}")
-    public ProjectDto updateProject(@PathVariable Long id, @Valid @RequestBody ProjectUpdateRequest request) {
+    public ProjectDto updateProject(@PathVariable Long id, @Valid @RequestBody ProjectUpdateRequest request, Authentication authentication) {
+        checkAdmin(authentication);
         return projectService.updateProject(id, request);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteProject(@PathVariable Long id) {
+    public void deleteProject(@PathVariable Long id, Authentication authentication) {
+        checkAdmin(authentication);
         projectService.deleteProject(id);
     }
 
