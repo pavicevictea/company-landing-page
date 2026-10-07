@@ -4,8 +4,8 @@
       <span class="logo-text">Example Dev - Admin Panel</span>
       <nav class="admin-nav">
         <a routerLink="/admin/content">Content Management</a>
-        <a routerLink="/admin/customer-requests">Customer Requests</a>
-        <a routerLink="/employee/projects">Projects</a>
+        <a *ngIf="authService.isAdmin() || authService.isEmployee()" [routerLink]="authService.isAdmin() ? '/admin/customer-requests' : '/employee/customer-requests'">Customer Requests</a>
+        <a *ngIf="authService.isAdmin() || authService.isEmployee()" [routerLink]="authService.isAdmin() ? '/admin/projects' : '/employee/projects'">Projects</a>
       </nav>
       <button type="button" class="btn-logout" (click)="logout()">Logout</button>
     </div>

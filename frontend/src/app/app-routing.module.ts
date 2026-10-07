@@ -17,9 +17,11 @@ const routes: Routes = [
   { path: 'admin/content', component: ContentManagementComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['ADMIN'] } },
   { path: 'register', component: RegisterComponent},
   { path: 'dashboard', component: UserDashboardComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['USER'] } },
-  { path: 'admin/customer-requests', component: CustomerRequestsComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['ADMIN', 'EMPLOYEE'] } },
+  { path: 'admin/customer-requests', component: CustomerRequestsComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['ADMIN'] } },
+  { path: 'employee/customer-requests', component: CustomerRequestsComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['EMPLOYEE'] } },
   { path: 'admin/services', component: ServiceManagementComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['ADMIN'] } },
-  { path: 'employee/projects', component: ProjectManagementComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['ADMIN', 'EMPLOYEE'] } },
+  { path: 'admin/projects', component: ProjectManagementComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['ADMIN'] } },
+  { path: 'employee/projects', component: ProjectManagementComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['EMPLOYEE'] } },
   { path: '**', redirectTo: '' }
 ];
 
