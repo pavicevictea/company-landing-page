@@ -78,6 +78,45 @@
             <span *ngFor="let member of project.teamMembers">{{ member.name }}</span>
           </div>
         </div>
+        <div *ngIf="isAdmin() && editingProjectId === project.id" class="edit-project-form">
+            <div class="form-group">
+                <label>Project Name</label>
+                <input type="text" [(ngModel)]="editProject.name">
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea [(ngModel)]="editProject.description"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select [(ngModel)]="editProject.status">
+                    <option value="NOT_STARTED">Not Started</option>
+                    <option value="IN_PROGRESS">In Progress</option>
+                    <option value="COMPLETED">Completed</option>
+                    <option value="ON_HOLD">On Hold</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Client</label>
+                <select [(ngModel)]="editProject.clientId">
+                    <option *ngFor="let client of clients" [ngValue]="client.id">{{ client.name }} ({{ client.email }})</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Team Members</label>
+                <label *ngFor="let employee of employees" class="checkbox-option">
+                    <input type="checkbox" [checked]="isEditEmployeeSelected(employee.id)" (change)="toggleEditEmployee(employee.id)">{{ employee.name }}
+                </label>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="cancel-button" (click)="cancelEditing()">Cancel</button>
+                <button type="button" class="save-button" (click)="saveProject()" [disabled]="isSaving">{{ isSaving ? 'Saving...' : 'Save Changes' }}</button>
+            </div>
+        </div>
+        <div *ngIf="isAdmin()" class="project-actions">
+            <button type="button" class="edit-button" (click)="startEditing(project)">Edit</button>
+            <button type="button" class="delete-button" (click)="deleteProject(project)">Delete</button>
+        </div>
       </div>
     </div>
   </div>
