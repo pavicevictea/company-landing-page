@@ -1,0 +1,43 @@
+<header class="admin-navbar">
+  <div class="nav-container">
+    <span class="logo-text">Example Dev - Admin Panel</span>
+    <nav class="admin-nav">
+      <a *ngIf="authService.isAdmin()" routerLink="/admin/content">Content Management</a>
+      <a routerLink="/admin/customer-requests">Customer Requests</a>
+      <a routerLink="/employee/projects">Projects</a>
+    </nav>
+    <button type="button" class="btn-logout" (click)="logout()">Logout</button>
+  </div>
+</header>
+<section class="projects-page">
+  <div class="projects-container">
+    <div class="projects-header">
+      <div>
+        <p class="eyebrow">Employee Portal</p>
+        <h1>Projects</h1>
+        <p class="subtitle">View and manage company projects.</p>
+      </div>
+    </div>
+    <div *ngIf="isLoading" class="status-message">Loading projects...</div>
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    <div *ngIf="!isLoading && projects.length === 0" class="empty-message">No projects are available.</div>
+    <div *ngIf="!isLoading && projects.length > 0" class="projects-grid">
+      <div *ngFor="let project of projects" class="project-card">
+        <div class="project-card-header">
+          <div>
+            <h2>{{ project.name }}</h2>
+            <p>{{ project.client.name }}</p>
+          </div>
+          <span class="status-badge">{{ getStatusLabel(project.status) }}</span>
+        </div>
+        <p class="project-description">{{ project.description || 'No description provided.' }}</p>
+        <div class="project-section">
+          <span class="section-label">Team</span>
+          <div class="team-list">
+            <span *ngFor="let member of project.teamMembers">{{ member.name }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

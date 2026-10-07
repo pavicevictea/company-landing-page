@@ -5,6 +5,7 @@
       <nav class="admin-nav">
         <a *ngIf="authService.isAdmin()" routerLink="/admin/content">Content Management</a>
         <a routerLink="/admin/customer-requests">Customer Requests</a>
+        <a routerLink="/employee/projects">Projects</a>
       </nav>
       <button type="button" class="btn-logout" (click)="logout()">Logout</button>
     </div>

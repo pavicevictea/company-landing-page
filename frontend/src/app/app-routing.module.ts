@@ -9,6 +9,7 @@ import { UserDashboardComponent } from './components/user-dashboard/user-dashboa
 import { CustomerRequestsComponent } from './components/customer-requests/customer-requests.component';
 import { RoleGuard } from './guards/role.guard';
 import { ServiceManagementComponent } from './components/service-management/service-management.component';
+import { ProjectManagementComponent } from './components/project-management/project-management.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'dashboard', component: UserDashboardComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['USER'] } },
   { path: 'admin/customer-requests', component: CustomerRequestsComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['ADMIN', 'EMPLOYEE'] } },
   { path: 'admin/services', component: ServiceManagementComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['ADMIN'] } },
+  { path: 'employee/projects', component: ProjectManagementComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['ADMIN', 'EMPLOYEE'] } },
   { path: '**', redirectTo: '' }
 ];
 

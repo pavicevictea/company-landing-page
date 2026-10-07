@@ -20,6 +20,7 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
 import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
 import { ServiceManagementComponent } from './components/service-management/service-management.component';
 import { CustomerRequestsComponent } from './components/customer-requests/customer-requests.component';
+import { ProjectManagementComponent } from './components/project-management/project-management.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { CustomerRequestsComponent } from './components/customer-requests/custom
     WelcomeComponent,
     UserDashboardComponent,
     ServiceManagementComponent,
-    CustomerRequestsComponent
+    CustomerRequestsComponent,
+    ProjectManagementComponent
   ],
   imports: [
     BrowserModule,
