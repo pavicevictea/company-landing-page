@@ -72,6 +72,16 @@
           <span class="status-badge">{{ getStatusLabel(project.status) }}</span>
         </div>
         <p class="project-description">{{ project.description || 'No description provided.' }}</p>
+        <div *ngIf="isEmployee()" class="status-editor">
+            <label>Update Status</label>
+            <select [(ngModel)]="selectedStatuses[project.id]">
+                <option value="NOT_STARTED">Not Started</option>
+                <option value="IN_PROGRESS">In Progress</option>
+                <option value="COMPLETED">Completed</option>
+                <option value="ON_HOLD">On Hold</option>
+            </select>
+            <button type="button" class="save-button" (click)="updateProjectStatus(project)" [disabled]="updatingStatusId === project.id">{{ updatingStatusId === project.id ? 'Updating...' : 'Update Status' }}</button>
+        </div>
         <div class="project-section">
           <span class="section-label">Team</span>
           <div class="team-list">

@@ -21,6 +21,9 @@ export class ProjectManagementComponent implements OnInit {
   isCreating = false;
   isSaving = false;
 
+  selectedStatuses: { [id: number]: string } = {};
+  updatingStatusId: number | null = null;
+
   newProject = {
     name: '',
     description: '',
@@ -58,6 +61,10 @@ export class ProjectManagementComponent implements OnInit {
     this.projectService.getProjects().subscribe(
       projects => {
         this.projects = projects;
+        this.selectedStatuses = {};
+        projects.forEach(project => {
+          this.selectedStatuses[project.id] = project.status;
+        });
         this.isLoading = false;
       },
       () => {
@@ -244,6 +251,30 @@ export class ProjectManagementComponent implements OnInit {
       },
       () => {
         this.errorMessage = 'Unable to delete project.';
+      }
+    );
+  }
+
+  updateProjectStatus(project: Project): void {
+    const status = this.selectedStatuses[project.id];
+    if (!status || status === project.status) {
+      return;
+    }
+
+    this.updatingStatusId = project.id;
+    this.projectService.updateStatus(
+      project.id,
+      status
+    ).subscribe(
+      () => {
+        this.updatingStatusId = null;
+        project.status = status;
+        this.selectedStatuses[project.id] = status;
+        this.successMessage = 'Project status updated successfully.';
+      },
+      () => {
+        this.updatingStatusId = null;
+        this.errorMessage = 'Unable to update project status.';
       }
     );
   }

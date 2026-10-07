@@ -384,3 +384,53 @@
   border: 1px solid #374151;
   border-radius: 6px;
 }
+
+.project-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #374151;
+}
+
+.edit-button,
+.delete-button {
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.edit-button {
+  background-color: transparent;
+  color: #d1d5db;
+  border: 1px solid #374151;
+}
+
+.delete-button {
+  background-color: transparent;
+  color: #fca5a5;
+  border: 1px solid #374151;
+}
+
+.status-editor {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #374151;
+}
+
+.status-editor label {
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+.status-editor select {
+  padding: 8px;
+  background-color: #0b0f19;
+  border: 1px solid #374151;
+  border-radius: 4px;
+  color: #d1d5db;
+}
