@@ -3,6 +3,7 @@ package com.example.companylandingpage.controller;
 import com.example.companylandingpage.dto.ProjectCreateRequest;
 import com.example.companylandingpage.dto.ProjectDto;
 import com.example.companylandingpage.dto.ProjectUpdateRequest;
+import com.example.companylandingpage.dto.ProjectUserDto;
 import com.example.companylandingpage.model.ProjectStatus;
 import com.example.companylandingpage.service.ProjectService;
 import jakarta.validation.Valid;
@@ -66,5 +67,17 @@ public class ProjectController {
 
     private String getRole(Authentication authentication) {
         return authentication.getAuthorities().stream().findFirst().map(authority -> authority.getAuthority().replace("ROLE_", "")).orElse("");
+    }
+
+    @GetMapping("/clients")
+    public List<ProjectUserDto> getClients(Authentication authentication) {
+        checkAdmin(authentication);
+        return projectService.getClients();
+    }
+
+    @GetMapping("/employees")
+    public List<ProjectUserDto> getEmployees(Authentication authentication) {
+        checkAdmin(authentication);
+        return projectService.getEmployees();
     }
 }

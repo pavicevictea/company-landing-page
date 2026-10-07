@@ -137,4 +137,20 @@ public class ProjectService {
                 user.getRole()
         );
     }
+
+    public List<ProjectUserDto> getClients() {
+        return userRepository.findAll()
+                .stream()
+                .filter(user -> "USER".equals(user.getRole()))
+                .map(this::toUserDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<ProjectUserDto> getEmployees() {
+        return userRepository.findAll()
+                .stream()
+                .filter(user -> "EMPLOYEE".equals(user.getRole()))
+                .map(this::toUserDto)
+                .collect(Collectors.toList());
+    }
 }
