@@ -89,6 +89,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/documents/**").hasAnyRole("USER", "ADMIN", "EMPLOYEE")
                         .requestMatchers(HttpMethod.DELETE, "/api/documents/**").hasRole("USER")
                         .requestMatchers("/api/contact/my").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/api/projects", "/api/projects/*").hasAnyRole("ADMIN", "EMPLOYEE")
+                        .requestMatchers(HttpMethod.GET, "/api/projects/clients", "/api/projects/employees").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/projects").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/projects/*").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/projects/*").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/projects/*/status").hasRole("EMPLOYEE")
                         .anyRequest().permitAll()
                 )
                 .headers(headers ->
