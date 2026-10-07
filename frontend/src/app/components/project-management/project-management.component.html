@@ -21,6 +21,47 @@
     <div *ngIf="isLoading" class="status-message">Loading projects...</div>
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
     <div *ngIf="!isLoading && projects.length === 0" class="empty-message">No projects are available.</div>
+    <div *ngIf="isAdmin()" class="admin-actions">
+        <button type="button" class="primary-button" (click)="startCreating()">Create Project</button>
+    </div>
+    <div *ngIf="isCreating" class="project-form-card">
+        <div class="form-header">
+            <h2>Create Project</h2>
+        </div>
+        <div class="form-group">
+            <label for="projectName">Project Name</label>
+            <input id="projectName" type="text" [(ngModel)]="newProject.name">
+        </div>
+        <div class="form-group">
+            <label for="projectDescription">Description</label>
+            <textarea id="projectDescription" [(ngModel)]="newProject.description"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="projectStatus">Status</label>
+            <select id="projectStatus" [(ngModel)]="newProject.status">
+                <option value="NOT_STARTED">Not Started</option>
+                <option value="IN_PROGRESS">In Progress</option>
+                <option value="COMPLETED">Completed</option>
+                <option value="ON_HOLD">On Hold</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="projectClient">Client</label>
+            <select id="projectClient" [(ngModel)]="newProject.clientId">
+                <option [ngValue]="null">Select client</option>
+                <option *ngFor="let client of clients" [ngValue]="client.id">{{ client.name }} ({{ client.email }})</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Team Members</label>
+            <label *ngFor="let employee of employees" class="checkbox-option">
+            <input type="checkbox" [checked]="isEmployeeSelected(employee.id)" (change)="toggleEmployee(employee.id)">{{ employee.name }}</label>
+        </div>
+        <div class="form-actions">
+            <button type="button" class="cancel-button" (click)="cancelCreating()">Cancel</button>
+            <button type="button" class="save-button" (click)="createProject()" [disabled]="isSaving">{{ isSaving ? 'Creating...' : 'Create Project' }}</button>
+        </div>
+    </div>
     <div *ngIf="!isLoading && projects.length > 0" class="projects-grid">
       <div *ngFor="let project of projects" class="project-card">
         <div class="project-card-header">

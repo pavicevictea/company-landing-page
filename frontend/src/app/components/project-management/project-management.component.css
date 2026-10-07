@@ -206,3 +206,84 @@
     flex-direction: column;
   }
 }
+
+.admin-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 25px;
+}
+
+.primary-button {
+  padding: 10px 20px;
+  background-color: #ffffff;
+  color: #0b0f19;
+  border: 1px solid #ffffff;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.project-form-card {
+  margin-bottom: 25px;
+  padding: 25px;
+  background-color: #111827;
+  border: 1px solid #374151;
+  border-radius: 6px;
+}
+
+.form-header {
+  margin-bottom: 25px;
+}
+
+.form-header h2 {
+  margin: 0;
+  color: #f3f4f6;
+  font-size: 21px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  color: #d1d5db;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  box-sizing: border-box;
+  padding: 11px;
+  background-color: #0b0f19;
+  border: 1px solid #374151;
+  border-radius: 5px;
+  color: #f3f4f6;
+  font-size: 14px;
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.checkbox-option {
+  flex-direction: row !important;
+  align-items: center;
+  font-weight: normal !important;
+}
+
+.checkbox-option input {
+  width: auto;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
