@@ -32,7 +32,7 @@ public class ProjectService {
         if ("ADMIN".equals(role)) {
             projects = projectRepository.findAll();
         } else {
-            projects = projectRepository.findByTeamMembersUsernameOrderByUpdatedAtDesc(username);
+            projects = projectRepository.findByTeamMember_UsernameOrderByUpdatedAtDesc(username);
         }
         return projects.stream().map(this::toDto).collect(Collectors.toList());
     }
