@@ -434,3 +434,43 @@
   border-radius: 4px;
   color: #d1d5db;
 }
+
+.project-statistics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: #111827;
+  border: 1px solid #374151;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stat-label {
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.stat-value {
+  color: #f3f4f6;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+@media (max-width: 800px) {
+  .project-statistics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .project-statistics {
+    grid-template-columns: 1fr;
+  }
+}

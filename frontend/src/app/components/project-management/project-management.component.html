@@ -17,6 +17,24 @@
         <h1>Projects</h1>
         <p class="subtitle">View and manage company projects.</p>
       </div>
+      <div *ngIf="!isLoading" class="project-statistics">
+        <div class="stat-card">
+            <span class="stat-label">Total Projects</span>
+            <span class="stat-value">{{ totalProjects }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">In Progress</span>
+            <span class="stat-value">{{ inProgressProjects }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Completed</span>
+            <span class="stat-value">{{ completedProjects }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">On Hold</span>
+            <span class="stat-value">{{ onHoldProjects }}</span>
+        </div>
+      </div>
     </div>
     <div *ngIf="isLoading" class="status-message">Loading projects...</div>
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>

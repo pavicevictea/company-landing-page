@@ -24,6 +24,11 @@ export class ProjectManagementComponent implements OnInit {
   selectedStatuses: { [id: number]: string } = {};
   updatingStatusId: number | null = null;
 
+  totalProjects = 0;
+  inProgressProjects = 0;
+  completedProjects = 0;
+  onHoldProjects = 0;
+
   newProject = {
     name: '',
     description: '',
@@ -61,6 +66,7 @@ export class ProjectManagementComponent implements OnInit {
     this.projectService.getProjects().subscribe(
       projects => {
         this.projects = projects;
+        this.calculateStatistics();
         this.selectedStatuses = {};
         projects.forEach(project => {
           this.selectedStatuses[project.id] = project.status;
@@ -277,6 +283,19 @@ export class ProjectManagementComponent implements OnInit {
         this.errorMessage = 'Unable to update project status.';
       }
     );
+  }
+
+  calculateStatistics(): void {
+    this.totalProjects = this.projects.length;
+    this.inProgressProjects = this.projects.filter(
+      project => project.status === 'IN_PROGRESS'
+    ).length;
+    this.completedProjects = this.projects.filter(
+      project => project.status === 'COMPLETED'
+    ).length;
+    this.onHoldProjects = this.projects.filter(
+      project => project.status === 'ON_HOLD'
+    ).length;
   }
 
 }
