@@ -11,7 +11,7 @@
       </div>
       <div class="form-group">
         <label for="password">Password</label>
-        <input id="password" type="password" name="password" [value]="password" (input)="password = $any($event.target).value; validateUsername()"required>
+        <input id="password" type="password" name="password" [value]="password" (input)="password = $any($event.target).value; validatePassword()" required>
         <p *ngIf="passwordError" class="field-error">{{ passwordError }}</p>
       </div>
       <button type="submit" [disabled]="!isFormValid()">Login</button>
